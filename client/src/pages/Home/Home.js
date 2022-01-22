@@ -7,6 +7,8 @@ const homePaths = [
 ];
 
 const Home = () => {
+    document.title = "Welcome"
+
     return (
         <div className="min-h-screen">
             <NavBar paths={homePaths}/>
