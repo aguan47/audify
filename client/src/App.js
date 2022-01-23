@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router";
 import Home from './pages/Home/Home';
 import Registration from "./pages/Registration/Registration";
 import LogIn from "./pages/LogIn/LogIn";
+import Journals from "./pages/Journals/Journals";
 
 const App = props => {
   let paths = (
@@ -9,6 +10,7 @@ const App = props => {
       <Route path="/" element={<Home/>} />
       <Route exact path="/log-in" element={<LogIn />} />
       <Route exact path="/register" element={<Registration/>} />
+      <Route exact path="/journals" element={<Journals/>} />
       <Route path="*" element={<Navigate replace to="/"/>} />
     </Routes>
   )
