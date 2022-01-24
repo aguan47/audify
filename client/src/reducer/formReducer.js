@@ -54,3 +54,37 @@ export const loginState = {
         value: ""
     }
 };
+
+export const editProfileState = {
+    name: {
+        name: "name",
+        type: "text",
+        label: "Name",
+        value: ""
+    },
+    birthday: {
+        name: "birthday",
+        type: "date",
+        label: "Birthday",
+        value: ""
+    },
+    email: {
+        name: "email",
+        type: "email",
+        label: "Email",
+        pattern: "[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z0-9]+",
+        value: ""
+    },
+    password: {
+        name: "password",
+        type: "password",
+        label: "Password",
+        value: ""
+    },
+    biography: {
+        name: "biography",
+        type: "text",
+        label: "Biography",
+        value: ""
+    }
+}

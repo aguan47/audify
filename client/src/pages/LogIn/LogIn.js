@@ -31,7 +31,7 @@ const LogIn = () => {
 
     return (
         <>
-            <Forms fields={state} submitText={"Log in"} dispatch={dispatch} submit={loginUser} />
+            <Forms fields={state} submitText={"Log in"} dispatch={dispatch} submit={loginUser} canSubmit={true} />
             <h3>Or you can join us by</h3>
             <button className="rounded-full px-5 py-2 bg-blue-400 hover:bg-blue-600">Google</button>
         </>

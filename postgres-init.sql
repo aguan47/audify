@@ -10,8 +10,11 @@ CREATE TABLE users (
     user_name TEXT NOT NULL,
     user_email TEXT UNIQUE NOT NULL,
     password TEXT NULL,
+    birthday DATE NOT NULL,
+    bio VARCHAR(200) NULL,
     join_date DATE NOT NULL DEFAULT CURRENT_DATE,
     is_deleted INT NOT NULL DEFAULT 0,
+    is_oauth INT NOT NULL DEFAULT 0,
     PRIMARY KEY (user_id)
 );
 

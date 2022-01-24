@@ -1,7 +1,7 @@
 import Field from "./Field/Field"
 import * as formActions from '../../reducer/actions/formActions';
 
-const Forms = ({fields, submitText, dispatch, submit}) => {
+const Forms = ({fields, submitText, dispatch, submit, canSubmit}) => {
 
     const fieldsKeys = Object.keys(fields);
     const inputs = fieldsKeys && fieldsKeys.map(key => {
@@ -18,7 +18,7 @@ const Forms = ({fields, submitText, dispatch, submit}) => {
     return (
         <form>
             {inputs}
-            <input type="submit" value={submitText} onClick={submit}/>
+            { canSubmit && <input type="submit" value={submitText} onClick={submit}/> }
         </form>
     );
 }
