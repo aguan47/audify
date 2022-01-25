@@ -24,6 +24,12 @@ export const registrationState = {
         label: "Name",
         value: ""
     },
+    birthday: {
+        name: "birthday",
+        type: "date",
+        label: "Birthday",
+        value: ""
+    },
     email: {
         name: "email",
         type: "email",
