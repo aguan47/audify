@@ -40,3 +40,7 @@ export const searchCookie = (cookieName) => {
     if (foundCookie.length === 0) return null;
     return foundCookie[0].split("=")[1];
 }
+
+export const deleteCookie = (cookieName) => {
+    document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT;`;
+}

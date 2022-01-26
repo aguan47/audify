@@ -1,4 +1,4 @@
-import { clearKeyValueLocalStorage, getKeyValueFromState, searchCookie, storeCookie } from '../utlities/helper';
+import { clearKeyValueLocalStorage, deleteCookie, getKeyValueFromState, searchCookie, storeCookie } from '../utlities/helper';
 import { ACCESS_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from "../config/constants";
 import axios, { createAuthorization } from "../axios/axios";
 
@@ -21,7 +21,7 @@ export const authenticateUser = async (e, errorState, setErrorState, state, user
         // store the cookie
         storeAuthCookies(tokens);
 
-        setUser({...user, name: data.name, isAuth: true});
+        setUser({...user, name: data.name, isAuth: true, accessToken: tokens.accessToken, refreshToken: tokens.refreshToken});
         navigate('/journals', { replace: true });
     } catch({ response }) {
         setErrorState({...errorState, isError: true, message: response?.data?.message});
@@ -39,4 +39,15 @@ export const initialAuthenticate = async (user, setUser) => {
         const { data } = await axios.post('/users/validate_token', null, createAuthorization(accessToken));
         setUser({...user, name: data.user.user_name, isAuth: true, accessToken: accessToken, refreshToken: refreshToken});
     } catch(err) {}
+}
+
+export const logoutUser = async (user, setUser, navigate) => {
+    try {
+        await axios.delete('/users/logout', createAuthorization(user.accessToken));
+        deleteCookie(ACCESS_TOKEN_COOKIE);
+        deleteCookie(REFRESH_TOKEN_COOKIE);
+        setUser({...user, name: "", isAuth: false, accessToken: "", refreshToken: ""});
+    } catch(err) {
+        navigate('/journals', {replace: true});        
+    }
 }

@@ -7,6 +7,8 @@ const verifyToken = async(req, res, next) => {
     try {
         const accessToken = getAccessTokenFromHeader(req.headers['authorization']);
 
+        if (!accessToken) throw new Error('No access token specified');
+
         const decodedInfo = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
         let userInformation = await retrieveUserInfoById(decodedInfo.id);
         userInformation = userInformation[0];

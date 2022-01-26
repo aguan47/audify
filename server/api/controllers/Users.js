@@ -28,7 +28,17 @@ const validateAccessToken = (req, res) => {
     try {
         res.status(200).json({success: true, message: 'Validated', user: res.locals.user});
     } catch(err) {
-        res.status(403).json({success: true, message: err.message});
+        res.status(403).json({success: false, message: err.message});
+    }
+}
+
+const logoutUser = (req, res) => {
+    try {
+        // TODO: remove the refresh token from the redis
+        
+        res.status(200).json({success: true, message: "Logged out"});
+    } catch(err) {
+        res.status(403).json({success: false, message: err.message});
     }
 }
 
@@ -36,5 +46,6 @@ const validateAccessToken = (req, res) => {
 module.exports = {
     register,
     login,
-    validateAccessToken
+    validateAccessToken,
+    logoutUser
 };
