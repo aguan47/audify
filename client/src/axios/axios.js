@@ -7,4 +7,12 @@ const axiosInstance = axios.create({
     }
 });
 
+export const createAuthorization = accessToken => {
+    return {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        }
+    }
+}
+
 export default axiosInstance;

@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Recorder from "../../components/Recorder/Recorder";
+import UserContext from "../../context/UserContext";
 
-const name = "Angelo";
 const Journals = () => {
-    document.title = `${name}'s journals`;
+    const {user} = useContext(UserContext);
+    console.log(user);
+    document.title = `${user.name}'s journals`;
 
     const [title, setTitle] = useState("");
     const [caption, setCaption] = useState("");

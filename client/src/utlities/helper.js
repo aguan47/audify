@@ -29,3 +29,14 @@ export const importKeyValueLocalStorage = (state, name) => {
     });
     return state;
 }
+
+export const storeCookie = (name, value, lifespan) => {
+    document.cookie = `${name}=${value}; max-age=${lifespan}; SameSite=Lax`;
+}
+
+export const searchCookie = (cookieName) => {
+    const foundCookie = document.cookie.split(";").filter(cookie => cookie.includes(cookieName));
+
+    if (foundCookie.length === 0) return null;
+    return foundCookie[0].split("=")[1];
+}

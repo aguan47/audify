@@ -1,0 +1,23 @@
+require('dotenv').config({path: `../.env.${process.env.NODE_ENV}`});
+const { getAccessTokenFromHeader } = require('../utlities/utilities.js');
+const jwt = require('jsonwebtoken');
+const { retrieveUserInfoById } = require('../db/models/Users.js');
+
+const verifyToken = async(req, res, next) => {
+    try {
+        const accessToken = getAccessTokenFromHeader(req.headers['authorization']);
+
+        const decodedInfo = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+        let userInformation = await retrieveUserInfoById(decodedInfo.id);
+        userInformation = userInformation[0];
+
+        res.locals.user = userInformation;
+        next();
+    } catch(err) {
+        res.status(403).json({ success: false, message: err.message });
+    }
+}
+
+module.exports = {
+    verifyToken
+}
