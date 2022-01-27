@@ -20,3 +20,9 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: root
+  
+  redis:
+    container_name: redis-container
+    image: redis
+    ports:
+      - 6379:6379

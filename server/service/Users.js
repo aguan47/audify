@@ -4,6 +4,7 @@ const { newUserSchema, existingUserSchema } = require('../db/schema/Users.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { saveNewUserInformation, retrieveUserInfoByEmail } = require('../db/models/Users.js');
+const { saveToRedis, deleteKeyRedis } = require('../utlities/utilities.js');
 
 const validateNewUser = async body => {
     return await validateRequest(newUserSchema, body);
@@ -48,11 +49,20 @@ const logInUser = async body => {
     return userInfo[0];
 }
 
+const saveRefreshTokenToRedis = async (id, refreshToken) => {
+    await saveToRedis(`${id}-refresh-token`, refreshToken);
+}
+
+const deleteRefreshTokensFromRedis = async key => {
+    await deleteKeyRedis(key);
+}
 
 module.exports = {
     validateNewUser,
     validateExistingUser,
     secureSaveNewUser,
     issueTokens,
-    logInUser
+    logInUser,
+    saveRefreshTokenToRedis,
+    deleteRefreshTokensFromRedis
 };
