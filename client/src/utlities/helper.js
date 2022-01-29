@@ -44,3 +44,29 @@ export const searchCookie = (cookieName) => {
 export const deleteCookie = (cookieName) => {
     document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT;`;
 }
+
+export const getLocalISOTime = (date) => {
+    const timezoneOffset = (new Date()).getTimezoneOffset() * 60000;
+    return new Date(new Date(date) - timezoneOffset).toISOString().slice(0, -1).split("T")[0];
+}
+
+export const loadProfileData = (state, profile) => {
+    if (!profile) return;
+
+    const keys = Object.keys(state);
+    keys && keys.forEach(key => {
+        let newValue = profile[key];
+
+        if (key === "birthday") newValue = getLocalISOTime(profile[key]);
+        state[key].value = newValue || ""; 
+    }); 
+    return state;
+}
+
+export const disableInput = (state, isDisabled) => {
+    const keys = Object.keys(state);
+    keys && keys.forEach(key => {
+        state[key].disabled = isDisabled;
+    });
+    return state;
+}

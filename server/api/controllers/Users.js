@@ -1,4 +1,4 @@
-const { validateNewUser, validateExistingUser, secureSaveNewUser, issueTokens, logInUser, saveRefreshTokenToRedis, deleteRefreshTokensFromRedis } = require('../../service/Users.js');
+const { validateNewUser, validateExistingUser, secureSaveNewUser, issueTokens, logInUser, saveRefreshTokenToRedis, deleteRefreshTokensFromRedis, getUserProfile, editUserProfile, validateEditProfile } = require('../../service/Users.js');
 
 const register = async (req, res) => {
     try {
@@ -15,16 +15,14 @@ const register = async (req, res) => {
 const login = async(req, res) => {
     try {
         await validateExistingUser(req.body);
-        const { user_email, user_name, user_id } = await logInUser(req.body);
-        const tokens = issueTokens({name: user_name, email: user_email, id: user_id});
+        const { email, name, user_id } = await logInUser(req.body);
+        const tokens = issueTokens({name: name, email: email, id: user_id});
         await saveRefreshTokenToRedis(user_id, tokens.refreshToken);
-        res.status(200).json({ success: true, message: "Successfully logged in", name: user_name, tokens });
+        res.status(200).json({ success: true, message: "Successfully logged in", name: name, tokens });
     } catch(err) {
         res.status(406).json({ success: false, message: err.message });
     }
 }
-
-
 
 const validateAccessToken = (req, res) => {
     try {
@@ -44,10 +42,33 @@ const logoutUser = async (req, res) => {
     }
 }
 
+const getUser = async (req, res) => {
+    try {
+        const { user_id } = res.locals.user;
+        const user = await getUserProfile(user_id);
+        res.status(200).json({success: true, message: "Success", user});
+    } catch (err) {
+        res.status(403).json({success: false, message: err.message});
+    }
+}
+
+const editUser = async (req, res) => {
+    try {
+        const { user_id } = res.locals.user;
+        await validateEditProfile(req.body);
+        await editUserProfile(user_id, req.body);
+        res.status(200).json({success: true, message: "Success"});
+    } catch(err) {
+        res.status(403).json({success: false, message: err.message});
+    }
+}
+
 
 module.exports = {
     register,
     login,
     validateAccessToken,
-    logoutUser
+    logoutUser,
+    getUser,
+    editUser
 };

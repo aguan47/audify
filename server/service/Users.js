@@ -1,9 +1,9 @@
 require('dotenv').config({path: `../.env.${process.env.NODE_ENV}`});
 const { validateRequest } = require('./validation.js');
-const { newUserSchema, existingUserSchema } = require('../db/schema/Users.js');
+const { newUserSchema, existingUserSchema, editUserSchema } = require('../db/schema/Users.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { saveNewUserInformation, retrieveUserInfoByEmail } = require('../db/models/Users.js');
+const { saveNewUserInformation, retrieveUserInfoByEmail, retrieveUserInformation, editUserInformation } = require('../db/models/Users.js');
 const { saveToRedis, deleteKeyRedis } = require('../utlities/utilities.js');
 
 const validateNewUser = async body => {
@@ -12,6 +12,10 @@ const validateNewUser = async body => {
 
 const validateExistingUser = async body => {
     return await validateRequest(existingUserSchema, body);
+}
+
+const validateEditProfile = async body => {
+    return await validateRequest(editUserSchema, body);
 }
 
 const secureSaveNewUser = async body => {
@@ -41,7 +45,7 @@ const logInUser = async body => {
     const { email, password } = body;
 
     const userInfo = await retrieveUserInfoByEmail(email);
-    if (userInfo.length === 0) throw new Error('Error retrieving user information.');
+    if (userInfo.length === 0) throw new Error("User doesn't exists");
     
     const result = await bcrypt.compare(password, userInfo[0].password);
     if (!result) throw new Error("Wrong password");
@@ -57,12 +61,25 @@ const deleteRefreshTokensFromRedis = async key => {
     await deleteKeyRedis(key);
 }
 
+const getUserProfile = async id => {
+    const data = await retrieveUserInformation(id); 
+    if (data.length === 0) throw new Error("User doesn't exists");
+    return data[0];
+}
+
+const editUserProfile = async (id, body) => {
+    await editUserInformation(id, body);
+}
+
 module.exports = {
     validateNewUser,
     validateExistingUser,
+    validateEditProfile,
     secureSaveNewUser,
     issueTokens,
     logInUser,
     saveRefreshTokenToRedis,
-    deleteRefreshTokensFromRedis
+    deleteRefreshTokensFromRedis,
+    getUserProfile,
+    editUserProfile
 };

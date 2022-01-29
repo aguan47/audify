@@ -37,7 +37,7 @@ export const initialAuthenticate = async (user, setUser) => {
 
     try {
         const { data } = await axios.post('/users/validate_token', null, createAuthorization(accessToken));
-        setUser({...user, name: data.user.user_name, isAuth: true, accessToken: accessToken, refreshToken: refreshToken});
+        setUser({...user, name: data.user.name, isAuth: true, accessToken: accessToken, refreshToken: refreshToken});
     } catch(err) {}
 }
 

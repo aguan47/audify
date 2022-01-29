@@ -1,7 +1,7 @@
 require('dotenv').config({path: `../.env.${process.env.NODE_ENV}`});
 const { getAccessTokenFromHeader } = require('../utlities/utilities.js');
 const jwt = require('jsonwebtoken');
-const { retrieveUserInfoById } = require('../db/models/Users.js');
+const { retrieveJSONPayload } = require('../db/models/Users.js');
 
 const verifyToken = async(req, res, next) => {
     try {
@@ -10,7 +10,7 @@ const verifyToken = async(req, res, next) => {
         if (!accessToken) throw new Error('No access token specified');
 
         const decodedInfo = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
-        let userInformation = await retrieveUserInfoById(decodedInfo.id);
+        let userInformation = await retrieveJSONPayload(decodedInfo.id);
         userInformation = userInformation[0];
 
         res.locals.user = userInformation;

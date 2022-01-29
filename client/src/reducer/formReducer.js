@@ -22,12 +22,14 @@ export const registrationState = {
         name: "name",
         type: "text",
         label: "Name",
+        placeholder: "Enter your name",
         value: ""
     },
     birthday: {
         name: "birthday",
         type: "date",
         label: "Birthday",
+        placeholder: "Enter your birhday",
         value: ""
     },
     email: {
@@ -35,12 +37,14 @@ export const registrationState = {
         type: "email",
         label: "Email",
         pattern: "[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z0-9]+",
+        placeholder: "Enter your email address",
         value: ""
     },
     password: {
         name: "password",
         type: "password",
         label: "Password",
+        placeholder: "Enter your password",
         value: ""
     }
 };
@@ -51,12 +55,14 @@ export const loginState = {
         type: "email",
         label: "Email",
         pattern: "[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z0-9]+",
+        placeholder: "Enter your email address",
         value: ""
     },
     password: {
         name: "password",
         type: "password",
         label: "Password",
+        placeholder: "Enter your password",
         value: ""
     }
 };
@@ -66,31 +72,43 @@ export const editProfileState = {
         name: "name",
         type: "text",
         label: "Name",
-        value: ""
+        placeholder: "Enter your name",
+        value: "",
+        disabled: true
     },
     birthday: {
         name: "birthday",
         type: "date",
         label: "Birthday",
-        value: ""
+        placeholder: "Enter your birthday",
+        value: "",
+        disabled: true
     },
     email: {
         name: "email",
         type: "email",
         label: "Email",
         pattern: "[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z0-9]+",
-        value: ""
+        placeholder: "Enter your email address",
+        value: "",
+        disabled: true
     },
-    password: {
-        name: "password",
-        type: "password",
-        label: "Password",
-        value: ""
-    },
-    biography: {
-        name: "biography",
+    bio: {
+        name: "bio",
         type: "text",
         label: "Biography",
-        value: ""
+        placeholder: "Enter your bio",
+        value: "",
+        disabled: true
     }
 }
+
+
+// password: {
+//     name: "password",
+//     type: "password",
+//     label: "Password",
+//     placeholder: "Enter your password",
+//     value: "",
+//     disabled: true
+// },
