@@ -36,7 +36,6 @@ export const registrationState = {
         name: "email",
         type: "email",
         label: "Email",
-        pattern: "[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z0-9]+",
         placeholder: "Enter your email address",
         value: ""
     },
@@ -54,7 +53,6 @@ export const loginState = {
         name: "email",
         type: "email",
         label: "Email",
-        pattern: "[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z0-9]+",
         placeholder: "Enter your email address",
         value: ""
     },
@@ -88,7 +86,6 @@ export const editProfileState = {
         name: "email",
         type: "email",
         label: "Email",
-        pattern: "[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z0-9]+",
         placeholder: "Enter your email address",
         value: "",
         disabled: true

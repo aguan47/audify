@@ -1,13 +1,14 @@
 import { useContext, useEffect, useReducer, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Forms from "../../components/Forms/Forms";
 import { registrationState, formReducer } from "../../reducer/formReducer";
 import { importKeyValueLocalStorage, saveKeyValueToLocalStorage } from '../../utlities/helper';
-import axios from '../../axios/axios';
 import { FULL_UPDATE_STATE } from "../../reducer/actions/formActions";
-import ErrorBanner from '../../components/ErrorBanner/ErrorBanner';
+import Banner from '../../components/Banner/Banner';
 import UserContext from "../../context/UserContext";
 import { authenticateUser, getAuthStateAndProps } from "../../events/Authenticate";
+import Loader from "../../components/Loader/Loader";
+import Container from "../../components/Container/Container";
 
 const apiPath = '/users/register';
 const pageName = "registration";
@@ -20,7 +21,7 @@ const Registration = () => {
         message: ""
     });
     const {user, setUser} = useContext(UserContext);
-
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -31,15 +32,30 @@ const Registration = () => {
         saveKeyValueToLocalStorage(regState, pageName, ["password"]);
     }, [regState]);
 
-    const registerUser = getAuthStateAndProps(errorState, setErrorState, regState, user, setUser, navigate, pageName, apiPath)(authenticateUser);
+    const registerUser = getAuthStateAndProps(errorState, setErrorState, regState, user, setUser, navigate, pageName, apiPath, setIsLoading)(authenticateUser);
 
     return (
-        <>
-            <ErrorBanner message={errorState.message} show={errorState.isError}/>
-            <Forms fields={regState} submitText={"Register now"} dispatch={dispatch} submit={registerUser} canSubmit={true} />
-            <h3>Or you can join us by</h3>
-            <button className="rounded-full px-5 py-2 bg-blue-400 hover:bg-blue-600">Google</button>
-        </>
+        <Container>
+
+            <div className="flex justify-center items-center">
+                <div className="bg-primary-btn h-screen w-3/5"> 
+                    <span class="material-icons text-white m-5 cursor-pointer hover:bg-secondary-btn p-1 rounded-full" onClick={() => navigate(-1)}>arrow_back</span>
+                </div>
+                <div className="w-full flex flex-col items-center">
+                    <h1 className="text-primary-btn font-bold text-center text-xl my-3">Register now</h1>
+                    <Banner message={errorState.message} show={errorState.isError} isError={true}/>
+                    {
+                        isLoading ? <Loader/>
+                        :
+                        <>
+                            <Forms fields={regState} submitText={"Register now"} dispatch={dispatch} submit={registerUser} canSubmit={true} />
+                            <p className="text-gray-400 text-center text-sm">{"Already have an account? "}<Link to="/log-in" className="text-primary-btn">Log in here</Link> </p>
+                        </>
+                    }
+                
+                </div> 
+            </div>
+        </Container>
     );
 }
 

@@ -1,4 +1,5 @@
 const db = require('../knex.js');
+let path = require('path');
 
 const saveNewUserInformation = async body => {
     const { name, birthday, password, email } = body;
@@ -9,7 +10,8 @@ const saveNewUserInformation = async body => {
         name: name,
         email: email, 
         birthday: birthday,
-        password: password
+        password: password,
+        profile_picture_path: "default-user.jpg"
     });
 }
 
@@ -27,7 +29,7 @@ const retrieveJSONPayload = async id => {
 
 const retrieveUserInformation = async id => {
     return await db('users')
-    .select('name', 'email', 'birthday', 'bio', 'join_date')
+    .select('name', 'email', 'birthday', 'bio', 'join_date', 'profile_picture_path')
     .where('user_id', '=', id);
 }
 

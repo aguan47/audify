@@ -7,11 +7,12 @@ const storeAuthCookies = (tokens) => {
     storeCookie(REFRESH_TOKEN_COOKIE, tokens.refreshToken, tokens.refreshTokenLifespan);
 }
 
-export const getAuthStateAndProps = (errorState, setErrorState, state, user, setUser, navigate, pageName, apiPath) =>  eventHandler => async e => eventHandler(e, errorState, setErrorState, state, user, setUser, navigate, pageName, apiPath);
+export const getAuthStateAndProps = (errorState, setErrorState, state, user, setUser, navigate, pageName, apiPath, setIsLoading) =>  eventHandler => async e => eventHandler(e, errorState, setErrorState, state, user, setUser, navigate, pageName, apiPath, setIsLoading);
 
-export const authenticateUser = async (e, errorState, setErrorState, state, user, setUser, navigate, pageName, apiPath) => {
+export const authenticateUser = async (e, errorState, setErrorState, state, user, setUser, navigate, pageName, apiPath, setIsLoading) => {
     e.preventDefault();
     setErrorState({...errorState, isError: false, message: ""});
+    setIsLoading(true);
     const loginInfo = getKeyValueFromState(state);
 
     try {
@@ -25,20 +26,28 @@ export const authenticateUser = async (e, errorState, setErrorState, state, user
         navigate('/journals', { replace: true });
     } catch({ response }) {
         setErrorState({...errorState, isError: true, message: response?.data?.message});
-    }   
+    } finally {
+        setIsLoading(false);
+    }  
     clearKeyValueLocalStorage(state, pageName);
 }
 
-export const initialAuthenticate = async (user, setUser) => {
+export const initialAuthenticate = async (user, setUser, setLoading, navigate, initialRoute) => {
     const accessToken = searchCookie(ACCESS_TOKEN_COOKIE);
     const refreshToken = searchCookie(REFRESH_TOKEN_COOKIE);
 
-    if (!accessToken || !refreshToken) return;
-
     try {
+        if (!accessToken || !refreshToken) throw new Error();
+
         const { data } = await axios.post('/users/validate_token', null, createAuthorization(accessToken));
         setUser({...user, name: data.user.name, isAuth: true, accessToken: accessToken, refreshToken: refreshToken});
-    } catch(err) {}
+        setLoading(false);
+        navigate(initialRoute);
+    } catch(err) {
+        setLoading(false);
+        navigate(initialRoute);
+        console.log(err);
+    }
 }
 
 export const logoutUser = async (user, setUser, navigate) => {

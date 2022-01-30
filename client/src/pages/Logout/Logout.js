@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
-import FullLoader from "../../components/Loading/FullLoader/FullLoader";
+import FullLoader from "../../components/Loader/FullLoader/FullLoader";
 import UserContext from "../../context/UserContext";
 import { logoutUser } from "../../events/Authenticate";
 

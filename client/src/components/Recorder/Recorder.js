@@ -1,17 +1,30 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { msToHumanTime } from '../../utlities/helper';
 
 let mediaRecorder = null;
 let audioChunks = [];
-let audioRecordings = [];
 const Recorder = () => {
 
     const [recording, setRecording] = useState(false);
+    const [time, setTime] = useState(0);
+    const [audio, setAudio] = useState(null);
 
+    useEffect(() => {
+        if (!recording) return;
+        
+        // Start recording time
+        let newInterval = setInterval(() => {
+            setTime(time => time + 1000);
+        }, 1000);
+        return () => clearInterval(newInterval);
+    }, [recording]);
 
     const recordAudio = async () => {
-        setRecording(true);
+        setTime(0);
+        setAudio(null);
         // Create an audio stream 
         const stream = await navigator.mediaDevices.getUserMedia({audio: true});
+        setRecording(true);
 
         // Start recording the audio
         mediaRecorder = new MediaRecorder(stream);
@@ -28,7 +41,7 @@ const Recorder = () => {
         mediaRecorder.addEventListener("stop", () => {
             const audioBlob = new Blob(audioChunks);
             const audioUrl = URL.createObjectURL(audioBlob);
-            audioRecordings.push(audioUrl);
+            setAudio(audioUrl);
 
             // Clear the chunks that we've recorded.
             audioChunks.length = 0;
@@ -36,34 +49,31 @@ const Recorder = () => {
         });
     }
 
-    let buttonClass = "bg-blue-400 rounded m-5 px-2 py-3 text-white hover:bg-blue-500 transition";
+    let buttonClass = "bg-primary-btn text-white hover:bg-secondary-btn transition cursor-pointer px-5 py-3 my-2 rounded-full font-bold";
     let buttonAction = recordAudio;
     let buttonText = "Record"
 
 
     if (recording) {
-        buttonClass = "bg-red-400 rounded m-5 px-2 py-3 text-white hover:bg-red-500 transition";
+        buttonClass = "bg-red-500 text-white hover:bg-red-600 transition cursor-pointer px-5 py-3 my-2 rounded-full font-bold";
         buttonAction = stopRecording;
-        buttonText = "Stop";
+        buttonText = `Stop`;
     }
 
     return (
         <>
+            <>
+                { 
+                    audio && <audio controls preload='auto'>
+                        <source src={audio} type="audio/ogg"/>
+                        Not working
+                    </audio>
+                }
+            </>
              <button 
                 className={buttonClass}
                 onClick={() => buttonAction()}
-            >{buttonText}</button>
-            <>
-                {
-                    audioRecordings && audioRecordings.map((audio, index) => {
-                        return (
-                            <audio controls>
-                                <source src={audio} type="audio/mpeg"/>
-                            </audio>
-                        );
-                    })
-                }
-            </>
+            >{buttonText} {recording && msToHumanTime(time)}</button>
         </>
     );
 }

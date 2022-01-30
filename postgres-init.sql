@@ -15,6 +15,7 @@ CREATE TABLE users (
     join_date DATE NOT NULL DEFAULT CURRENT_DATE,
     is_deleted INT NOT NULL DEFAULT 0,
     is_oauth INT NOT NULL DEFAULT 0,
+    profile_picture_path TEXT NULL,
     PRIMARY KEY (user_id)
 );
 

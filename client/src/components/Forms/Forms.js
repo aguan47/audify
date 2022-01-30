@@ -14,11 +14,11 @@ const Forms = ({fields, submitText, dispatch, submit, canSubmit}) => {
             />
         );
     });
-    
+   
     return (
-        <form className="flex justify-center flex-col mx-10">
+        <form className="flex flex-col m-auto px-10 py-5 w-full">
             {inputs}
-            { canSubmit && <input type="submit" value={submitText} onClick={submit} className="bg-blue-400 text-white hover:bg-blue-500 transition cursor-pointer px-5 py-3 my-2 rounded-full"/> }
+            { canSubmit && <input type="submit" value={submitText} onClick={submit} className="bg-primary-btn text-white hover:bg-secondary-btn transition cursor-pointer px-5 py-3 my-2 rounded-full font-bold"/> }
         </form>
     );
 }

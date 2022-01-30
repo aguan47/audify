@@ -16,6 +16,9 @@ app.use(compression());
 // Use all of the routes specified
 app.use('/users', userRoutes);
 
+// Serve static images
+app.use('/images', express.static(__dirname + '/images'))
+
 
 if (process.env.NODE_ENV !== "development") {
     console.log("production");

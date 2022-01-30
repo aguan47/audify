@@ -1,22 +1,17 @@
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import Recorder from "../../components/Recorder/Recorder";
-import UserContext from "../../context/UserContext";
+import Container from "../../components/Container/Container";
+import JournalForm from "../../components/JournalForm/JournalForm";
+import AuthNavBar from "../../components/NavBar/AuthNavBar";
 
 document.title = `Your journals | Audify`;
 const Journals = () => {
-
-    const [title, setTitle] = useState("");
-    const [caption, setCaption] = useState("");
-
     return (
-        <>
-            <Link to="/logout">Logout</Link>
-            <Link to="/profile">Profile</Link>
-            <input type="text" onChange={e => setTitle(e.target.value)} value={title} name="title"/>
-            <textarea onChange={e => setCaption(e.target.value)} value={caption} name="title"/>
-           <Recorder/>
-        </>
+        <Container>
+            <AuthNavBar/>
+            <div className="w-full flex flex-col items-center">
+                <JournalForm/>
+            </div>
+        </Container>
     );
 }
 

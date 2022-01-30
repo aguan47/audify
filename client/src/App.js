@@ -1,15 +1,17 @@
-import { Navigate, Route, Routes } from "react-router";
+import React, { Suspense } from 'react';
+import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router";
 import UserContext from './context/UserContext';
-import Home from './pages/Home/Home';
-import Registration from "./pages/Registration/Registration";
-import LogIn from "./pages/LogIn/LogIn";
-import Journals from "./pages/Journals/Journals";
-import Profile from "./pages/Profile/Profile";
-import Logout from "./pages/Logout/Logout";
 import { useEffect, useState } from "react";
 import { initialAuthenticate } from "./events/Authenticate";
-import FullLoader from "./components/Loading/FullLoader/FullLoader";
+import FullLoader from "./components/Loader/FullLoader/FullLoader";
+import { AnimatePresence } from 'framer-motion';
 
+const LandingPage = React.lazy(() => import('./pages/LandingPage/LandingPage'));
+const Registration = React.lazy(() => import("./pages/Registration/Registration"));
+const LogIn = React.lazy(() => import("./pages/LogIn/LogIn"));
+const Journals = React.lazy(() => import("./pages/Journals/Journals"));
+const Profile = React.lazy(() => import("./pages/Profile/Profile"));
+const Logout = React.lazy(() => import("./pages/Logout/Logout"));
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -19,44 +21,44 @@ const App = () => {
     accessToken: '',
     refreshToken: ''
   });
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-      initialAuthenticate(user, setUser, null);
-    }, 1000);
+    initialAuthenticate(user, setUser, setIsLoading, navigate, location.pathname);
   }, []);
 
-  // Unauthenticated path
-  let paths = (
-    <Routes>
-      <Route exact path="/" element={<Home/>} />
-      <Route exact path="/log-in" element={<LogIn />} />
-      <Route exact path="/register" element={<Registration/>} />
-      <Route path="*" element={<Navigate replace to="/"/>} />
-    </Routes>
-  );
+  let paths = null;
 
-  if (user.isAuth) {
+  if (user.isAuth && !isLoading) {
     paths = (
-      <Routes>
+      <Routes location={location} key={location.key}>
         <Route exact path="/journals" element={<Journals/>} />
         <Route exact path="/profile" element={<Profile/>} />
         <Route exact path="/logout" element={<Logout/>} />
-        <Route path="*" element={<Navigate replace to="/journals"/>} />
+        <Route path="*" element={<Navigate to="/journals"/>} />
+      </Routes>
+    );
+  } else if (!user.isAuth && !isLoading) {
+    paths = (
+      <Routes location={location} key={location.key}>
+        <Route exact path="/" element={<LandingPage/>} />
+        <Route exact path="/log-in" element={<LogIn />} />
+        <Route exact path="/register" element={<Registration/>} />
+        <Route path="*" element={<Navigate to="/"/>} />
       </Routes>
     );
   }
 
   return (
-    <>
+    <Suspense fallback={<FullLoader show={true} />}>
       <FullLoader show={isLoading}/>
-      { !isLoading &&  (
-        <UserContext.Provider value={{user, setUser}}>
-          {paths}
-        </UserContext.Provider>
-      )}
-    </>
+      <UserContext.Provider value={{user, setUser}}>
+          <AnimatePresence exitBeforeEnter>
+            {paths}
+          </AnimatePresence>
+      </UserContext.Provider>
+    </Suspense>
   );
 }
 

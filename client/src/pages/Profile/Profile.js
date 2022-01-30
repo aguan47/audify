@@ -5,22 +5,33 @@ import UserContext from "../../context/UserContext";
 import { editUserInformation, getUserInformation } from "../../events/Users";
 import { disableInput, loadProfileData } from "../../utlities/helper";
 import { FULL_UPDATE_STATE } from "../../reducer/actions/formActions";
+import Banner from "../../components/Banner/Banner";
+import AuthNavBar from '../../components/NavBar/AuthNavBar';
+import Container from "../../components/Container/Container";
+import FileUpload from "../../components/FileUpload/FileUpload";
+import { motion } from "framer-motion";
+
 
 const Profile = () => {
 
     const {user, setUser} = useContext(UserContext);
     const [profile, setProfile] = useState(null);
     const [isEdit, setIsEdit] = useState(false);
-    const [profilePicture, setProfilePicture] = useState("");
     const [buttonState, setButtonState] = useState({
-        buttonClass: "bg-blue-400 px-3 py-2 text-white",
+        buttonClass: "rounded-full bg-primary-btn py-1 px-5 text-white ml-10 hover:bg-secondary-btn transition font-bold",
         buttonText: "Edit Profile"
+    });
+    const [messageState, setMessageState] = useState({
+        showMessage: false,
+        setMessageState: "",
+        isError: false
     });
     const [state, dispatch] = useReducer(formReducer, editProfileState);
 
     document.title = `${user.name} | Audify`;
     useEffect(() => {
         getUserInformation(user, setUser, setProfile);
+        return () => disableInput(state, true);
     }, []);
 
     useEffect(() => {
@@ -28,21 +39,30 @@ const Profile = () => {
     }, [profile]);
 
     return (
-        <>
-            <img src={profilePicture} alt={"User portrait"}/>
-            { isEdit && <input type="file" accept="image/*"/> }
-            <button className={buttonState.buttonClass} onClick={() => editBtnHandler(state, isEdit, setIsEdit, buttonState, setButtonState)}>{buttonState.buttonText}</button> 
-            <Forms fields={state} submitText={"Save changes"} dispatch={dispatch} submit={() => editUserInformation(user, setUser, setIsEdit, state)} canSubmit={isEdit}/>
-        </>
+        <Container>
+            <AuthNavBar/>
+            <div className="flex flex-col justify-center items-center">
+                <Banner message={messageState.message} show={messageState.showMessage} isError={messageState.isError} />
+                <div className="flex justify-between w-screen">
+                    <button className={buttonState.buttonClass} onClick={() => editBtnHandler(state, isEdit, setIsEdit, buttonState, setButtonState)}>{buttonState.buttonText}</button> 
+                    <br /><br />
+                </div>
+                <div className="flex flex-col justify-center items-center w-full">
+                    <img src={profile?.profile_picture_path} alt={"User portrait"} className="rounded-full max-w-standard h-auto m-5"/>
+                    { isEdit && <FileUpload/> }
+                </div>
+                <Forms fields={state} submitText={"Save changes"} dispatch={dispatch} submit={e => editUserInformation(user, setUser, state, e, messageState, setMessageState)} canSubmit={isEdit}/>
+            </div>
+        </Container>
     );
 }
 
 const editBtnHandler = (state,isEdit, setIsEdit, buttonState, setButtonState) => {
     setIsEdit(!isEdit);
     if (!isEdit) {
-        setButtonState({...buttonState, buttonClass: "bg-red-400 px-3 py-2 text-white", buttonText: "Don't save changes"});
+        setButtonState({...buttonState, buttonClass: "rounded-full bg-red-500 py-1 px-5 text-white ml-10 hover:bg-red-600 transition font-bold", buttonText: "Don't save changes"});
     } else {
-        setButtonState({...buttonState, buttonClass: "bg-blue-400 px-3 py-2 text-white", buttonText: "Edit Profile"});
+        setButtonState({...buttonState, buttonClass: "rounded-full bg-primary-btn py-1 px-5 text-white ml-10 hover:bg-secondary-btn transition font-bold", buttonText: "Edit Profile"});
     }
     disableInput(state, isEdit);
 }
