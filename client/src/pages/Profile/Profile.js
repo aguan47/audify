@@ -3,14 +3,23 @@ import Forms from "../../components/Forms/Forms";
 import { editProfileState, formReducer } from "../../reducer/formReducer";
 import UserContext from "../../context/UserContext";
 import { editUserInformation, getUserInformation } from "../../events/Users";
-import { disableInput, loadProfileData } from "../../utlities/helper";
+import { disableInput, loadPicture, loadProfileData } from "../../utlities/helper";
 import { FULL_UPDATE_STATE } from "../../reducer/actions/formActions";
 import Banner from "../../components/Banner/Banner";
 import AuthNavBar from '../../components/NavBar/AuthNavBar';
 import Container from "../../components/Container/Container";
-import FileUpload from "../../components/FileUpload/FileUpload";
-import { motion } from "framer-motion";
+import Loader from '../../components/Loader/Loader';
+import ProfilePicture from "../../components/ProfilePicture/ProfilePIcture";
+import { BLUE_BUTTON, RED_BUTTON } from "../../tailwind/tailwind";
 
+const EditButton = ({buttonState, editEventHandler}) => {
+    return (
+        <div className="flex justify-between w-screen ml-20">
+            <button className={buttonState.buttonClass} onClick={editEventHandler}>{buttonState.buttonText}</button> 
+            <br /><br />
+        </div>
+    )
+}
 
 const Profile = () => {
 
@@ -18,9 +27,12 @@ const Profile = () => {
     const [profile, setProfile] = useState(null);
     const [isEdit, setIsEdit] = useState(false);
     const [buttonState, setButtonState] = useState({
-        buttonClass: "rounded-full bg-primary-btn py-1 px-5 text-white ml-10 hover:bg-secondary-btn transition font-bold",
+        buttonClass: BLUE_BUTTON,
         buttonText: "Edit Profile"
     });
+    const [initialInputState, setinitialInputState] = useState(null);   // This is where we will store the state of the user information after retrieving it for the first time
+    const [initialProfilePicture, setInitialProfilePicture] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const [messageState, setMessageState] = useState({
         showMessage: false,
         setMessageState: "",
@@ -30,28 +42,42 @@ const Profile = () => {
 
     document.title = `${user.name} | Audify`;
     useEffect(() => {
-        getUserInformation(user, setUser, setProfile);
+        getUserInformation(user, state, setProfile, setinitialInputState, messageState, setMessageState, setInitialProfilePicture);
         return () => disableInput(state, true);
     }, []);
 
     useEffect(() => {
+        setIsLoading(true);
         dispatch({type: FULL_UPDATE_STATE, newState: loadProfileData(state, profile)});
+        setIsLoading(false);
     }, [profile]);
+
+    useEffect(() => {
+        if (isEdit || !initialInputState) return;
+        setIsLoading(true);
+        disableInput(initialInputState, true);
+        dispatch({type: FULL_UPDATE_STATE, newState: initialInputState});
+        setProfile({...profile, profile_picture_path: initialProfilePicture});
+        setIsLoading(false);
+    }, [isEdit]);
+
+    const editEventHandler = () => editBtnHandler(state, isEdit, setIsEdit, buttonState, setButtonState);
+    const submitHandler = e => editUserInformation(user, setUser, state, e, messageState, setMessageState, setinitialInputState, setIsLoading, setInitialProfilePicture);
+    const changePictureHandler = e => loadPicture(e, profile, setProfile);
 
     return (
         <Container>
             <AuthNavBar/>
             <div className="flex flex-col justify-center items-center">
                 <Banner message={messageState.message} show={messageState.showMessage} isError={messageState.isError} />
-                <div className="flex justify-between w-screen">
-                    <button className={buttonState.buttonClass} onClick={() => editBtnHandler(state, isEdit, setIsEdit, buttonState, setButtonState)}>{buttonState.buttonText}</button> 
-                    <br /><br />
-                </div>
-                <div className="flex flex-col justify-center items-center w-full">
-                    <img src={profile?.profile_picture_path} alt={"User portrait"} className="rounded-full max-w-standard h-auto m-5"/>
-                    { isEdit && <FileUpload/> }
-                </div>
-                <Forms fields={state} submitText={"Save changes"} dispatch={dispatch} submit={e => editUserInformation(user, setUser, state, e, messageState, setMessageState)} canSubmit={isEdit}/>
+                <EditButton buttonState={buttonState} editEventHandler={editEventHandler} />
+                {
+                    isLoading ? <Loader/> :
+                    <>
+                        <ProfilePicture isEdit={isEdit} profilePicture={profile?.profile_picture_path} changePictureHandler={changePictureHandler}/>
+                        <Forms fields={state} submitText={"Save changes"} dispatch={dispatch} submit={submitHandler} canSubmit={isEdit}/>
+                    </>
+                }
             </div>
         </Container>
     );
@@ -60,9 +86,9 @@ const Profile = () => {
 const editBtnHandler = (state,isEdit, setIsEdit, buttonState, setButtonState) => {
     setIsEdit(!isEdit);
     if (!isEdit) {
-        setButtonState({...buttonState, buttonClass: "rounded-full bg-red-500 py-1 px-5 text-white ml-10 hover:bg-red-600 transition font-bold", buttonText: "Don't save changes"});
+        setButtonState({...buttonState, buttonClass: RED_BUTTON, buttonText: "Don't save changes"});
     } else {
-        setButtonState({...buttonState, buttonClass: "rounded-full bg-primary-btn py-1 px-5 text-white ml-10 hover:bg-secondary-btn transition font-bold", buttonText: "Edit Profile"});
+        setButtonState({...buttonState, buttonClass: BLUE_BUTTON, buttonText: "Edit Profile"});
     }
     disableInput(state, isEdit);
 }

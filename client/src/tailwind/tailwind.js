@@ -1,0 +1,2 @@
+export const RED_BUTTON = "rounded-full bg-red-500 py-1 px-5 text-white hover:bg-red-600 transition font-bold cursor-pointer";
+export const BLUE_BUTTON = "rounded-full bg-primary-btn py-1 px-5 text-white hover:bg-secondary-btn transition font-bold cursor-pointer";

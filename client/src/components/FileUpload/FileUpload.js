@@ -1,9 +1,11 @@
-const FileUpload = (props) => {
+import { BLUE_BUTTON } from "../../tailwind/tailwind";
+
+const FileUpload = ({changeHandler}) => {
     return (
         <>
-            <label className="rounded-full bg-primary-btn py-1 px-5 text-white hover:bg-secondary-btn transition cursor-pointer flex flex-col justify-center items-center font-bold">
+            <label className={BLUE_BUTTON}>
                 Upload new picture
-                <input type="file" accept="image/*" className="hidden"/>
+                <input type="file" accept="image/*" className="hidden" onChange={changeHandler}/>
             </label>
         </>
     );
