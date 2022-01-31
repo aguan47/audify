@@ -1,2 +1,11 @@
 export const RED_BUTTON = "rounded-full bg-red-500 py-1 px-5 text-white hover:bg-red-600 transition font-bold cursor-pointer";
 export const BLUE_BUTTON = "rounded-full bg-primary-btn py-1 px-5 text-white hover:bg-secondary-btn transition font-bold cursor-pointer";
+export const HOLLOW_BLUE_BUTTON = "rounded-full border-2 border-primary-btn py-1 px-5 text-primary-btn hover:bg-secondary-btn hover:text-white transition font-bold";
+export const WHITE_BUTTON = "m-5 bg-primary-bg text-primary-btn py-3 px-5 rounded-full font-bold";
+export const BIG_BLUE_BUTTON = "bg-primary-btn text-white hover:bg-secondary-btn transition cursor-pointer px-5 py-3 my-2 rounded-full font-bold";
+export const BIG_RED_BUTTON = "bg-red-500 text-white hover:bg-red-600 transition cursor-pointer px-5 py-3 my-2 rounded-full font-bold";
+export const LABEL = "text-primary-btn font-bold";
+export const INPUT = "py-3 px-4 my-2 rounded-full border-solid border-2 border-grey-200 focus:border-primary-btn focus:outline-none";
+export const LINK_TEXT = "text-primary-text py-1 px-5 ml-5 hover:border-primary-btn transition font-bold";
+export const BLUE_LINK = "rounded-full bg-primary-btn py-1 px-5 text-white ml-5 font-bold hover:bg-secondary-btn transition";
+export const RED_LINK = "rounded-full bg-red-500 py-1 px-5 text-white ml-5 hover:bg-red-600 transition font-bold";

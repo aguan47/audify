@@ -1,9 +1,10 @@
+import { RED_LINK } from "../../tailwind/tailwind";
 import NavBar from "./NavBar";
 
 const homePaths = [
     {name: "Journals", path: "/journals"},
     {name: "Profile", path: "/profile"},
-    {name: "Log out", path: "/logout", btnDesign: "rounded-full bg-red-500 py-1 px-5 text-white ml-5 hover:bg-red-600 font-bold"}
+    {name: "Log out", path: "/logout", btnDesign: RED_LINK}
 ];
 
 const AuthNavBar = () => {

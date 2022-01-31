@@ -1,5 +1,6 @@
 import Field from "./Field/Field"
 import * as formActions from '../../reducer/actions/formActions';
+import { BIG_BLUE_BUTTON } from "../../tailwind/tailwind";
 
 const Forms = ({fields, submitText, dispatch, submit, canSubmit}) => {
 
@@ -18,7 +19,7 @@ const Forms = ({fields, submitText, dispatch, submit, canSubmit}) => {
     return (
         <form className="flex flex-col m-auto px-10 py-5 w-full">
             {inputs}
-            { canSubmit && <input type="submit" value={submitText} onClick={submit} className="bg-primary-btn text-white hover:bg-secondary-btn transition cursor-pointer px-5 py-3 my-2 rounded-full font-bold"/> }
+            { canSubmit && <input type="submit" value={submitText} onClick={submit} className={BIG_BLUE_BUTTON}/> }
         </form>
     );
 }

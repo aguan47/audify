@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { BIG_BLUE_BUTTON, BIG_RED_BUTTON } from '../../tailwind/tailwind';
 import { msToHumanTime } from '../../utlities/helper';
 
 let mediaRecorder = null;
@@ -49,13 +50,13 @@ const Recorder = () => {
         });
     }
 
-    let buttonClass = "bg-primary-btn text-white hover:bg-secondary-btn transition cursor-pointer px-5 py-3 my-2 rounded-full font-bold";
+    let buttonClass = BIG_BLUE_BUTTON;
     let buttonAction = recordAudio;
     let buttonText = "Record"
 
 
     if (recording) {
-        buttonClass = "bg-red-500 text-white hover:bg-red-600 transition cursor-pointer px-5 py-3 my-2 rounded-full font-bold";
+        buttonClass = BIG_RED_BUTTON;
         buttonAction = stopRecording;
         buttonText = `Stop`;
     }

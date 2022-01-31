@@ -66,20 +66,22 @@ const Profile = () => {
     const changePictureHandler = e => loadPicture(e, profile, setProfile);
 
     return (
-        <Container>
+        <>
             <AuthNavBar/>
-            <div className="flex flex-col justify-center items-center">
-                <Banner message={messageState.message} show={messageState.showMessage} isError={messageState.isError} />
-                <EditButton buttonState={buttonState} editEventHandler={editEventHandler} />
-                {
-                    isLoading ? <Loader/> :
-                    <>
-                        <ProfilePicture isEdit={isEdit} profilePicture={profile?.profile_picture_path} changePictureHandler={changePictureHandler}/>
-                        <Forms fields={state} submitText={"Save changes"} dispatch={dispatch} submit={submitHandler} canSubmit={isEdit}/>
-                    </>
-                }
-            </div>
-        </Container>
+            <Container>
+                <div className="flex flex-col justify-center items-center">
+                    <Banner message={messageState.message} show={messageState.showMessage} isError={messageState.isError} />
+                    <EditButton buttonState={buttonState} editEventHandler={editEventHandler} />
+                    {
+                        isLoading ? <Loader/> :
+                        <>
+                            <ProfilePicture isEdit={isEdit} profilePicture={profile?.profile_picture_path} changePictureHandler={changePictureHandler}/>
+                            <Forms fields={state} submitText={"Save changes"} dispatch={dispatch} submit={submitHandler} canSubmit={isEdit}/>
+                        </>
+                    }
+                </div>
+            </Container>
+        </>
     );
 }
 

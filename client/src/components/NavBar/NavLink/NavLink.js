@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
+import { BLUE_LINK, LINK_TEXT } from "../../../tailwind/tailwind";
 
 const NavLink = props => {
-    let btnStyle = "rounded-full bg-primary-btn py-1 px-5 text-white ml-5 font-bold";
+    let btnStyle = BLUE_LINK
     
-    if (!props.current) btnStyle = "text-primary-text py-1 px-5 ml-5 hover:border-primary-btn transition font-bold";
+    if (!props.current) btnStyle = LINK_TEXT;
     if (props.design) btnStyle = props.design;
 
     return (

@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { BIG_BLUE_BUTTON } from "../../tailwind/tailwind";
 import Modal from "../Modal/Modal";
 import Recorder from "../Recorder/Recorder";
 
@@ -26,7 +27,7 @@ const JournalForm = (props) => {
                     exit="exit"
                     onChange={e => setCaption(e.target.value)} value={caption} name="title" placeholder="Enter journal caption" className="p-1 m-1 rounded resize-none border-2 border-grey-200 focus:border-primary-btn focus:outline-none"/>
                 <Recorder/>
-                <input type="submit" value={"Save journal"} className="bg-primary-btn text-white hover:bg-secondary-btn transition cursor-pointer px-5 py-3 my-2 rounded-full font-bold"/>        
+                <input type="submit" value={"Save journal"} className={BIG_BLUE_BUTTON}/>        
             </Modal>
         </>
 
