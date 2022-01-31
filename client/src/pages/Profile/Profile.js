@@ -55,10 +55,12 @@ const Profile = () => {
     useEffect(() => {
         if (isEdit || !initialInputState) return;
         setIsLoading(true);
-        disableInput(initialInputState, true);
-        dispatch({type: FULL_UPDATE_STATE, newState: initialInputState});
-        setProfile({...profile, profile_picture_path: initialProfilePicture});
-        setIsLoading(false);
+        setTimeout(() => {
+            disableInput(initialInputState, true);
+            dispatch({type: FULL_UPDATE_STATE, newState: initialInputState});
+            setProfile({...profile, profile_picture_path: initialProfilePicture});
+            setIsLoading(false);
+        }, 500);
     }, [isEdit]);
 
     const editEventHandler = () => editBtnHandler(state, isEdit, setIsEdit, buttonState, setButtonState);

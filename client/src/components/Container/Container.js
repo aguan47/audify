@@ -21,7 +21,7 @@ const containerVariants = {
 
 const Container = ({children}) => {
     return (
-        <motion.div variants={containerVariants} animate="animate" initial="initial" exit="exit" className="w-screen h-screen">
+        <motion.div variants={containerVariants} animate="animate" initial="initial" exit="exit">
             {children}
         </motion.div>
     );
