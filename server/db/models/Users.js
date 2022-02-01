@@ -29,7 +29,13 @@ const retrieveJSONPayload = async id => {
 
 const retrieveUserInformation = async id => {
     return await db('users')
-    .select('name', 'email', 'birthday', 'bio', 'join_date', 'profile_picture_path')
+    .select('name', 'email', 'birthday', 'bio', 'join_date')
+    .where('user_id', '=', id);
+}
+
+const retrieveProfilePicture = async id => {
+    return await db('users')
+    .select('profile_picture_path')
     .where('user_id', '=', id);
 }
 
@@ -46,10 +52,20 @@ const editUserInformation = async (id, body) => {
     });
 }
 
+const editUserProfilePicture = async(id, profilePicturePath) => {
+    return await db('users')
+    .where('user_id', '=', id)
+    .update({
+        profile_picture_path: profilePicturePath
+    });
+}
+
 module.exports = {
     saveNewUserInformation,
     retrieveUserInfoByEmail,
     retrieveJSONPayload,
     retrieveUserInformation,
-    editUserInformation
+    retrieveProfilePicture,
+    editUserInformation,
+    editUserProfilePicture
 };

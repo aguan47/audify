@@ -3,7 +3,7 @@ const { validateRequest } = require('./validation.js');
 const { newUserSchema, existingUserSchema, editUserSchema } = require('../db/schema/Users.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { saveNewUserInformation, retrieveUserInfoByEmail, retrieveUserInformation, editUserInformation } = require('../db/models/Users.js');
+const { saveNewUserInformation, retrieveUserInfoByEmail, retrieveUserInformation, editUserInformation, retrieveProfilePicture, editUserProfilePicture } = require('../db/models/Users.js');
 const { saveToRedis, deleteKeyRedis } = require('../utlities/utilities.js');
 
 const validateNewUser = async body => {
@@ -67,8 +67,19 @@ const getUserProfile = async id => {
     return data[0];
 }
 
+const getUserProfilePicture = async id => {
+    const data = await retrieveProfilePicture(id);
+    if (data.length === 0) throw new Error("User doesn't exists");
+    return data[0];
+}
+
 const editUserProfile = async (id, body) => {
     await editUserInformation(id, body);
+}
+
+const editUserAvatar = async(id, filename) => {
+    if (!filename) throw new Error('Invalid image. Try again');
+    await editUserProfilePicture(id, filename);
 }
 
 module.exports = {
@@ -81,5 +92,7 @@ module.exports = {
     saveRefreshTokenToRedis,
     deleteRefreshTokensFromRedis,
     getUserProfile,
-    editUserProfile
+    getUserProfilePicture,
+    editUserProfile,
+    editUserAvatar
 };

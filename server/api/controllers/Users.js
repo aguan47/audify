@@ -1,4 +1,4 @@
-const { validateNewUser, validateExistingUser, secureSaveNewUser, issueTokens, logInUser, saveRefreshTokenToRedis, deleteRefreshTokensFromRedis, getUserProfile, editUserProfile, validateEditProfile } = require('../../service/Users.js');
+const { validateNewUser, validateExistingUser, secureSaveNewUser, issueTokens, logInUser, saveRefreshTokenToRedis, deleteRefreshTokensFromRedis, getUserProfile, editUserProfile, validateEditProfile, getUserProfilePicture, editUserAvatar } = require('../../service/Users.js');
 
 const register = async (req, res) => {
     try {
@@ -52,6 +52,16 @@ const getUser = async (req, res) => {
     }
 }
 
+const getUserAvatar = async(req, res) => {
+    try {
+        const { user_id } = res.locals.user;
+        const user = await getUserProfilePicture(user_id);
+        res.status(200).json({success: true, message: "Success", user});
+    } catch (err) {
+        res.status(403).json({success: false, message: err.message});
+    }
+}
+
 const editUser = async (req, res) => {
     try {
         const { user_id } = res.locals.user;
@@ -63,6 +73,15 @@ const editUser = async (req, res) => {
     }
 }
 
+const editProfilePicture = async(req, res) => {
+    try {
+        const { user_id } = res.locals.user;
+        await editUserAvatar(user_id, req?.file?.filename);
+        res.status(200).json({success: true, message: "Success"});
+    } catch(err) {
+        res.status(403).json({success: false, message: err.message});
+    }
+}
 
 module.exports = {
     register,
@@ -70,5 +89,7 @@ module.exports = {
     validateAccessToken,
     logoutUser,
     getUser,
-    editUser
+    getUserAvatar,
+    editUser,
+    editProfilePicture
 };

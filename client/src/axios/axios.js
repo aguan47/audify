@@ -15,4 +15,13 @@ export const createAuthorization = accessToken => {
     }
 }
 
+export const formDataHeader = accessToken => {
+    return {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            "Content-Type": "multipart/form-data"
+        }
+    }
+}
+
 export default axiosInstance;

@@ -30,8 +30,15 @@ const Profile = () => {
         buttonClass: BLUE_BUTTON,
         buttonText: "Edit Profile"
     });
-    const [initialInputState, setinitialInputState] = useState(null);   // This is where we will store the state of the user information after retrieving it for the first time
-    const [initialProfilePicture, setInitialProfilePicture] = useState(null);
+    const [initialInputState, setInitialInputState] = useState(null);   // This is where we will store the state of the user information after retrieving it for the first time
+    const [profilePicture, setProfilePicture] = useState({
+        image: null,
+        source: ""
+    });
+    const [initialProfilePicture, setInitialProfilePicture] = useState({
+        image: null,
+        source: ""
+    });
     const [isLoading, setIsLoading] = useState(false);
     const [messageState, setMessageState] = useState({
         showMessage: false,
@@ -42,7 +49,7 @@ const Profile = () => {
 
     document.title = `${user.name} | Audify`;
     useEffect(() => {
-        getUserInformation(user, state, setProfile, setinitialInputState, messageState, setMessageState, setInitialProfilePicture);
+        getUserInformation(user, state, setProfile, setInitialInputState, messageState, setMessageState, initialProfilePicture, setInitialProfilePicture, profilePicture, setProfilePicture);
         return () => disableInput(state, true);
     }, []);
 
@@ -58,14 +65,14 @@ const Profile = () => {
         setTimeout(() => {
             disableInput(initialInputState, true);
             dispatch({type: FULL_UPDATE_STATE, newState: initialInputState});
-            setProfile({...profile, profile_picture_path: initialProfilePicture});
+            setProfilePicture({image: null, source: initialProfilePicture.source});
             setIsLoading(false);
         }, 500);
     }, [isEdit]);
 
     const editEventHandler = () => editBtnHandler(state, isEdit, setIsEdit, buttonState, setButtonState);
-    const submitHandler = e => editUserInformation(user, setUser, state, e, messageState, setMessageState, setinitialInputState, setIsLoading, setInitialProfilePicture);
-    const changePictureHandler = e => loadPicture(e, profile, setProfile);
+    const submitHandler = e => editUserInformation(e, user, setUser, state, profile, messageState, setMessageState, setInitialInputState, setIsLoading, initialProfilePicture, setInitialProfilePicture, profilePicture);
+    const changePictureHandler = e => loadPicture(e, setProfilePicture);
 
     return (
         <>
@@ -77,7 +84,7 @@ const Profile = () => {
                     {
                         isLoading ? <Loader/> :
                         <>
-                            <ProfilePicture isEdit={isEdit} profilePicture={profile?.profile_picture_path} changePictureHandler={changePictureHandler}/>
+                            <ProfilePicture isEdit={isEdit} profilePicture={profilePicture.source} changePictureHandler={changePictureHandler}/>
                             <Forms fields={state} submitText={"Save changes"} dispatch={dispatch} submit={submitHandler} canSubmit={isEdit}/>
                         </>
                     }
