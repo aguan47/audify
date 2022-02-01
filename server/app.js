@@ -6,6 +6,7 @@ const app = express();
 
 // Import all of the routes specified in the routes folder
 const userRoutes = require('./api/routes/Users.js');
+const journalRoutes = require('./api/routes/Journals.js');
 
 // use these middlewares
 app.use(express.urlencoded({ extended: true }));
@@ -15,9 +16,11 @@ app.use(compression());
 
 // Use all of the routes specified
 app.use('/users', userRoutes);
+app.use('/journals', journalRoutes);
 
-// Serve static images
+// Serve static images and audios
 app.use('/images', express.static(__dirname + '/images'))
+app.use('/audio', express.static(__dirname + '/audio'));
 
 
 if (process.env.NODE_ENV !== "development") {

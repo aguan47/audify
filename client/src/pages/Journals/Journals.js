@@ -3,13 +3,17 @@ import Container from "../../components/Container/Container";
 import JournalForm from "../../components/JournalForm/JournalForm";
 import AuthNavBar from "../../components/NavBar/AuthNavBar";
 import NoData from "../../components/NoData/NoData";
+import { createJournal } from "../../events/Journals";
 import { escapeToCloseModal } from "../../events/Keys";
 import { BLUE_BUTTON, HOLLOW_BLUE_BUTTON } from "../../tailwind/tailwind";
+import UserContext from '../../context/UserContext';
 
-document.title = `Your journals | Audify`;
 const Journals = () => {
+    document.title = `Your journals | Audify`;
+    
     const [showNewJournal, setShowNewJournal] = useState(false);
     const [journals, setJournals] = useState(null);
+    const { user, setUser } = useContext(UserContext);
 
     const escapeHandler = e => escapeToCloseModal(e, showNewJournal, setShowNewJournal);
 
@@ -26,7 +30,11 @@ const Journals = () => {
                         journals ? <h1>Journals</h1> : <NoData/>
                     }
                 </Container>
-                <JournalForm show={showNewJournal} clickHandler={() => setShowNewJournal(false)}/>
+                <JournalForm 
+                    show={showNewJournal} 
+                    clickHandler={() => setShowNewJournal(false)}
+                    accessToken={user.accessToken}
+                />
             </div>
         </>
     );

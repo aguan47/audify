@@ -1,26 +1,20 @@
 const multer = require('multer');
-const imageStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'images/');     // save it to the images folder
-    },
-    filename: (req, file, cb) => {
-        const extension = file.originalname.split(".")[1];
-        const filename = `${new Date().getTime()}.${extension}`;
-        cb(null, filename);
+const multerOptions = destination => {
+    return {
+        destination: (req, file, cb) => {
+            cb(null, destination);     // save it to the specified folder
+        },
+        filename: (req, file, cb) => {
+            const extension = file.mimetype.split("/")[1];
+            const filename = `${new Date().getTime()}.${extension}`;
+            cb(null, filename);
+        }
     }
-});
+}
 
-const audioStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'audio/');     // save it to the audio folder
-    },
-    filename: (req, file, cb) => {
-        const extension = file.originalname.split(".")[1];
-        const filename = `${new Date().getTime()}.${extension}`;
-        cb(null, filename);
-    }
-});
 
+const imageStorage = multer.diskStorage(multerOptions('images/'));
+const audioStorage = multer.diskStorage(multerOptions('audio/'));
 const imageUpload = multer({storage: imageStorage});
 const audioUpload = multer({storage: audioStorage});
 

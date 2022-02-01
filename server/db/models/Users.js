@@ -1,5 +1,4 @@
 const db = require('../knex.js');
-let path = require('path');
 
 const saveNewUserInformation = async body => {
     const { name, birthday, password, email } = body;

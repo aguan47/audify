@@ -20,7 +20,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE journals (
-    journal_id UUID NOT NULL,
+    journal_id UUID NOT NULL DEFAULT uuid_generate_v4(),
     user_id UUID NOT NULL,
     create_date DATE NOT NULL DEFAULT CURRENT_DATE,
     last_modified TIMESTAMP NULL,

@@ -4,7 +4,7 @@ import { msToHumanTime } from '../../utlities/helper';
 
 let mediaRecorder = null;
 let audioChunks = [];
-const Recorder = () => {
+const Recorder = ({setAudioJournal}) => {
 
     const [recording, setRecording] = useState(false);
     const [time, setTime] = useState(0);
@@ -40,9 +40,10 @@ const Recorder = () => {
     const stopRecording = async () => {
         await mediaRecorder.stop();
         mediaRecorder.addEventListener("stop", () => {
-            const audioBlob = new Blob(audioChunks);
+            const audioBlob = new Blob(audioChunks, { 'type': 'audio/mp3' });
             const audioUrl = URL.createObjectURL(audioBlob);
             setAudio(audioUrl);
+            setAudioJournal({audio: audioBlob, source: audioUrl});
 
             // Clear the chunks that we've recorded.
             audioChunks.length = 0;
