@@ -1,40 +1,36 @@
 import axios, { createAuthorization, formDataHeader } from '../axios/axios';
+import { BLUE } from '../config/constants';
 
-const createJournalData = (title, caption, audioJournal) => {
+const createJournalData = (title, caption, audioJournal, currentColor) => {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('caption', caption);
     formData.append('journal', audioJournal.audio);
+    formData.append('color', currentColor);
     return formData;
 }
 
-const createNewJournalEntryData = (title, caption, audioSource) => {
-    return {
-        journal_id: new Date().getTime(),
-        title: title,
-        caption: caption,
-        journal_path: audioSource,
-        created_date: new Date()
-    }
+const createNewJournalEntryData = (journal) => {
+    return {...journal, journal_path:`${process.env.REACT_APP_AXIOS_BASE_URL}/audio/${journal.journal_path}`};
 }
 
 const modifyJournalPath = (journals) => {
     return journals && journals.map(journal => {
-        journal.journal_path = `${process.env.REACT_APP_AXIOS_BASE_URL}/audio/${journal.journal_path}`
-        return journal;
+        return createNewJournalEntryData(journal);
     });
 }
 
-export const createJournal = async (accessToken, e, title, setTitle, caption, setCaption, audioJournal, setAudioJournal, journals, setJournals) => {
+export const createJournal = async (accessToken, e, title, setTitle, caption, setCaption, audioJournal, setAudioJournal, journals, setJournals, currentColor, setCurrentColor) => {
     e.preventDefault();
-    const journalData = createJournalData(title, caption, audioJournal);
+    const journalData = createJournalData(title, caption, audioJournal, currentColor);
     try {
         const { data } = await axios.post("/journals/", journalData, formDataHeader(accessToken));
-        console.log(data);
+        console.log(data.journal);
         setTitle("");
         setCaption("");
         setAudioJournal({audio: null, source: ""});
-        setJournals([...journals, createNewJournalEntryData(title, caption, audioJournal.source)]);
+        setCurrentColor(BLUE);
+        setJournals([...journals, createNewJournalEntryData(data.journal)]);
     } catch({response}) {
         console.log(response.data.message);
     }

@@ -7,7 +7,7 @@ const LandingPage = () => {
 
     return (
         <Container>
-            <div className='w-screen h-screen bg-primary-btn flex flex-col justify-center items-center'>
+            <div className='w-screen h-screen bg-blue-1 flex flex-col justify-center items-center'>
                 <h1 className='text-7xl text-white font-bold'>Audify.</h1>
                 <p className='text-white text-xl font-thin'>A voice journal </p>
                 <div className='m-10'>

@@ -23,6 +23,7 @@ CREATE TABLE journals (
     journal_id UUID NOT NULL DEFAULT uuid_generate_v4(),
     user_id UUID NOT NULL,
     create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    color VARCHAR(10) NOT NULL,
     last_modified TIMESTAMP NULL,
     caption VARCHAR(150) NOT NULL,
     title VARCHAR(50) NOT NULL,

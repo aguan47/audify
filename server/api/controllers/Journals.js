@@ -4,8 +4,8 @@ const createJournal = async(req, res) => {
     try {
         const { user_id } = res.locals.user;
         await validateNewJournal(req.body);
-        const data = await createNewJournal(user_id, req.body, req.file.filename);
-        res.status(200).json({success: true, message: "Success", data});
+        const journal = await createNewJournal(user_id, req.body, req.file.filename);
+        res.status(200).json({success: true, message: "Success", journal});
     } catch(err) {
         res.status(403).json({success: false, message: err.message});
     }

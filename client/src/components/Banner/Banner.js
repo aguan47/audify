@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 
 const Banner = ({ message, show, isError }) => {
 
-    let bannerDesign = "text-center bg-red-400 text-white py-2 mb-2 w-full flex justify-between";
-    if (!isError) bannerDesign = "text-center bg-green-400 text-white py-2 mb-2 w-full flex justify-between";
+    let bannerDesign = "text-center bg-red-1 text-white py-2 mb-2 w-full flex justify-between";
+    if (!isError) bannerDesign = "text-center bg-green-1 text-white py-2 mb-2 w-full flex justify-between";
 
     const [showBanner, setShowBanner] = useState(false);
 

@@ -8,12 +8,13 @@ const JournalList = ({userJournals}) => {
             title={journal.title} 
             caption={journal.caption} 
             audioSource={journal.journal_path}
-            createDate={journal.create_date} />
+            createDate={journal.create_date}
+            color={journal.color} />
         );
     });
 
     return (
-        <div className="w-screen flex flex-col items-center m-5">
+        <div className="w-full flex flex-col items-center my-5">
             {journals}
         </div>
     );

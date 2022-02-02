@@ -16,12 +16,15 @@ const JournalPage = () => {
     document.title = `Your journals | Audify`;
     
     const [showNewJournal, setShowNewJournal] = useState(false);
+    const [showSort, setShowSort] = useState(false);
     const [journals, setJournals] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const { user } = useContext(UserContext);
 
     useEffect(() => {
-        getJournals(user.accessToken, setJournals, setIsLoading);
+        setTimeout(() => {
+            getJournals(user.accessToken, setJournals, setIsLoading);
+        }, 500);
     }, []);
 
     const escapeHandler = e => escapeToCloseModal(e, showNewJournal, setShowNewJournal);
@@ -32,10 +35,10 @@ const JournalPage = () => {
                 <AuthNavBar/>
                 <Container>
                     <div className="px-10 py-1 flex gap-x-2">
-                        <button className={HOLLOW_BLUE_BUTTON}>Sort journals by</button>
+                        <button className={HOLLOW_BLUE_BUTTON} onClick={() => setShowSort(true)}>Sort journals</button>
                         <button className={BLUE_BUTTON} onClick={() => setShowNewJournal(true)}>Create new journal</button>
                     </div>
-                    { isLoading && <Loader/> }
+                    { isLoading && <div className="w-screen flex justify-center items-center"><Loader/></div> }
                     {
                         !isLoading && 
                         <>

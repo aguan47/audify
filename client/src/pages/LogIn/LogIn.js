@@ -37,17 +37,17 @@ const LogIn = () => {
     return (
         <Container>
             <div className="flex justify-center items-center">
-                <div className="bg-primary-btn h-screen w-3/5"> 
+                <div className="bg-blue-1 h-screen w-3/5"> 
                     <span className="material-icons text-white m-5 cursor-pointer hover:bg-secondary-btn p-1 rounded-full" onClick={() => navigate(-1)}>arrow_back</span>
                 </div>
                 <div className="w-full flex flex-col items-center">
-                    <h1 className="text-primary-btn font-bold text-center text-xl my-3">Log in</h1>
+                    <h1 className="text-blue-1 font-bold text-center text-xl my-3">Log in</h1>
                     <Banner message={errorState.message} show={errorState.isError} isError={true}/>
                     {
                         isLoading ? <Loader/>
                         : <>
                             <Forms fields={state} submitText={"Log in"} dispatch={dispatch} submit={loginUser} canSubmit={true} />
-                            <p className="text-gray-400 text-center text-sm">{"Don't have an account? "}<Link to="/register" className="text-primary-btn">Sign up here</Link> </p>
+                            <p className="text-gray-400 text-center text-sm">{"Don't have an account? "}<Link to="/register" className="text-blue-1">Sign up here</Link> </p>
                         </>
                     }
                 

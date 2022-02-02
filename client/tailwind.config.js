@@ -5,11 +5,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "primary-bg": "#F2F2F2",
-        "primary-text": "#0D0D0D",
-        "secondary-text": "#0378A6",
-        "primary-btn": "#1BA0F2",
-        "secondary-btn": "#0597F2"
+        'blue-0': '#477FE6',
+        'blue-1': '#4a84f0',
+        'blue-2': '#3B69BF',
+        'red-0': '#FA6969',
+        'red-1': '#CF343A',
+        'red-2': '#BF3035',
+        'green-0': '#22E674',
+        'green-1': '#1BB15A',
+        'green-2': '#1DBF60',
+        'yellow-0': '#F5C107',
+        'yellow-1': '#ecb908',
+        'yellow-2': '#CFA306'
       },
       minWidth: {
         'aspect': '150px',
@@ -62,6 +69,7 @@ module.exports = {
       width: {
         'aspect': '150px',
         '1/10': '10%',
+        '9/10': "95%",
         '1/8': '10rem',
         '1/5': '20%',
         '2/5': '40%',
