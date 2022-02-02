@@ -13,6 +13,13 @@ const saveJournal = async(id, body, filename) => {
     });
 }
 
+const retrieveJournals = async(id) => {
+    return await db('journals')
+    .select('journal_id', 'title', 'caption', 'create_date', 'journal_path')
+    .where('user_id','=', id);
+}
+
 module.exports = {
-    saveJournal
+    saveJournal,
+    retrieveJournals
 };

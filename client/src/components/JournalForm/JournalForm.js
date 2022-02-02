@@ -12,7 +12,7 @@ const textAreaVariants = {
     }
 }
 
-const JournalForm = ({ show, clickHandler, accessToken }) => {
+const JournalForm = ({ show, clickHandler, accessToken, journals, setJournals }) => {
 
     const [title, setTitle] = useState("");
     const [caption, setCaption] = useState("");
@@ -22,7 +22,7 @@ const JournalForm = ({ show, clickHandler, accessToken }) => {
     });
     const [showAudioJournal, setShowAudioJournal] = useState(false);
 
-    const createJournalHandler = e => createJournal(accessToken, e, title, setTitle, caption, setCaption, audioJournal, setAudioJournal);
+    const createJournalHandler = e => createJournal(accessToken, e, title, setTitle, caption, setCaption, audioJournal, setAudioJournal, journals, setJournals);
 
     return(
         <>

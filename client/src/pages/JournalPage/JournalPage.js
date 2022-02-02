@@ -3,20 +3,29 @@ import Container from "../../components/Container/Container";
 import JournalForm from "../../components/JournalForm/JournalForm";
 import AuthNavBar from "../../components/NavBar/AuthNavBar";
 import NoData from "../../components/NoData/NoData";
-import { createJournal } from "../../events/Journals";
+import { getJournals } from "../../events/Journals";
 import { escapeToCloseModal } from "../../events/Keys";
 import { BLUE_BUTTON, HOLLOW_BLUE_BUTTON } from "../../tailwind/tailwind";
 import UserContext from '../../context/UserContext';
+import JournalList from "../../components/JournalList/JournalList";
+import Loader from "../../components/Loader/Loader";
 
-const Journals = () => {
+
+
+const JournalPage = () => {
     document.title = `Your journals | Audify`;
     
     const [showNewJournal, setShowNewJournal] = useState(false);
     const [journals, setJournals] = useState(null);
-    const { user, setUser } = useContext(UserContext);
+    const [isLoading, setIsLoading] = useState(true);
+    const { user } = useContext(UserContext);
+
+    useEffect(() => {
+        getJournals(user.accessToken, setJournals, setIsLoading);
+    }, []);
 
     const escapeHandler = e => escapeToCloseModal(e, showNewJournal, setShowNewJournal);
-
+    console.log(journals);
     return (
         <>
             <div onKeyDown={e => escapeHandler(e)} tabIndex={0}>
@@ -26,18 +35,24 @@ const Journals = () => {
                         <button className={HOLLOW_BLUE_BUTTON}>Sort journals by</button>
                         <button className={BLUE_BUTTON} onClick={() => setShowNewJournal(true)}>Create new journal</button>
                     </div>
+                    { isLoading && <Loader/> }
                     {
-                        journals ? <h1>Journals</h1> : <NoData/>
+                        !isLoading && 
+                        <>
+                            {  journals?.length ? <JournalList userJournals={journals}/> : <NoData/> }
+                        </>
                     }
                 </Container>
                 <JournalForm 
                     show={showNewJournal} 
                     clickHandler={() => setShowNewJournal(false)}
                     accessToken={user.accessToken}
+                    journals={journals}
+                    setJournals={setJournals}
                 />
             </div>
         </>
     );
 }
 
-export default Journals;
+export default JournalPage;

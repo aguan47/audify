@@ -22,10 +22,10 @@ CREATE TABLE users (
 CREATE TABLE journals (
     journal_id UUID NOT NULL DEFAULT uuid_generate_v4(),
     user_id UUID NOT NULL,
-    create_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_modified TIMESTAMP NULL,
-    caption VARCHAR(150) NULL,
-    title VARCHAR(50) NULL,
+    caption VARCHAR(150) NOT NULL,
+    title VARCHAR(50) NOT NULL,
     journal_path TEXT NOT NULL,
     is_deleted INT NOT NULL DEFAULT 0,
     is_edited INT NOT NULL DEFAULT 0,

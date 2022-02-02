@@ -9,7 +9,7 @@ import { AnimatePresence } from 'framer-motion';
 const LandingPage = React.lazy(() => import('./pages/LandingPage/LandingPage'));
 const Registration = React.lazy(() => import("./pages/Registration/Registration"));
 const LogIn = React.lazy(() => import("./pages/LogIn/LogIn"));
-const Journals = React.lazy(() => import("./pages/Journals/Journals"));
+const JournalPage = React.lazy(() => import("./pages/JournalPage/JournalPage"));
 const Profile = React.lazy(() => import("./pages/Profile/Profile"));
 const Logout = React.lazy(() => import("./pages/Logout/Logout"));
 
@@ -33,7 +33,7 @@ const App = () => {
   if (user.isAuth && !isLoading) {
     paths = (
       <Routes location={location} key={location.key}>
-        <Route exact path="/journals" element={<Journals/>} />
+        <Route exact path="/journals" element={<JournalPage/>} />
         <Route exact path="/profile" element={<Profile/>} />
         <Route exact path="/logout" element={<Logout/>} />
         <Route path="*" element={<Navigate to="/journals"/>} />
