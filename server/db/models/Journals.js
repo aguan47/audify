@@ -4,7 +4,7 @@ const saveJournal = async(id, body, filename) => {
     const { title, caption, color } = body;
     
     return await db('journals')
-    .returning(['journal_id', 'title', 'caption', 'journal_path', 'color'])
+    .returning(['journal_id', 'title', 'caption', 'journal_path', 'color', 'create_date'])
     .insert({
         user_id: id,
         title: title,

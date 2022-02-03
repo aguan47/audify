@@ -4,11 +4,11 @@ import { msToHumanTime } from '../../utlities/helper';
 
 let mediaRecorder = null;
 let audioChunks = [];
-const Recorder = ({setAudioJournal}) => {
+const Recorder = ({setAudioJournal, audioRef, shouldOutput}) => {
 
     const [recording, setRecording] = useState(false);
     const [time, setTime] = useState(0);
-    const [audio, setAudio] = useState(null);
+
 
     useEffect(() => {
         if (!recording) return;
@@ -22,7 +22,10 @@ const Recorder = ({setAudioJournal}) => {
 
     const recordAudio = async () => {
         setTime(0);
-        setAudio(null);
+
+        if (shouldOutput && setAudioJournal) setAudioJournal({audio: null, source: ""});
+
+
         // Create an audio stream 
         const stream = await navigator.mediaDevices.getUserMedia({audio: true});
         setRecording(true);
@@ -42,8 +45,7 @@ const Recorder = ({setAudioJournal}) => {
         mediaRecorder.addEventListener("stop", () => {
             const audioBlob = new Blob(audioChunks, { 'type': 'audio/mp3' });
             const audioUrl = URL.createObjectURL(audioBlob);
-            setAudio(audioUrl);
-            setAudioJournal({audio: audioBlob, source: audioUrl});
+            if (shouldOutput && setAudioJournal) setAudioJournal({audio: audioBlob, source: audioUrl});
 
             // Clear the chunks that we've recorded.
             audioChunks.length = 0;
@@ -63,20 +65,10 @@ const Recorder = ({setAudioJournal}) => {
     }
 
     return (
-        <>
-            <>
-                { 
-                    audio && <audio controls preload='auto'>
-                        <source src={audio} type="audio/ogg"/>
-                        Not working
-                    </audio>
-                }
-            </>
-             <button 
-                className={buttonClass}
-                onClick={() => buttonAction()}
-            >{buttonText} {recording && msToHumanTime(time)}</button>
-        </>
+        <button 
+            className={buttonClass}
+            onClick={() => buttonAction()}
+        >{buttonText} {recording && msToHumanTime(time)}</button>
     );
 }
 

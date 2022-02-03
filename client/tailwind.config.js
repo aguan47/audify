@@ -16,7 +16,11 @@ module.exports = {
         'green-2': '#1DBF60',
         'yellow-0': '#F5C107',
         'yellow-1': '#ecb908',
-        'yellow-2': '#CFA306'
+        'yellow-2': '#CFA306',
+        'red-bg': 'rgba(207,52,58,0.1)',
+        'blue-bg': 'rgba(74,132,240,0.1)',
+        'green-bg': 'rgba(27,177,90,0.1)',
+        'yellow-bg': 'rgba(236, 185, 8, 0.1)'
       },
       minWidth: {
         'aspect': '150px',
@@ -92,7 +96,8 @@ module.exports = {
         '3/4': '75%'
       },
       gridTemplateColumns: {
-        'audio-player': '5% 40% 20% 5% 30%'
+        'audio-player': '75% 25%',
+        'audio-player-sm': '20% 50% 30%'
       }
     }
   },

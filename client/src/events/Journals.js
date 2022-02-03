@@ -25,7 +25,6 @@ export const createJournal = async (accessToken, e, title, setTitle, caption, se
     const journalData = createJournalData(title, caption, audioJournal, currentColor);
     try {
         const { data } = await axios.post("/journals/", journalData, formDataHeader(accessToken));
-        console.log(data.journal);
         setTitle("");
         setCaption("");
         setAudioJournal({audio: null, source: ""});

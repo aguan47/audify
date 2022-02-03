@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { BIG_BLUE_BUTTON } from "../../tailwind/tailwind";
 import Modal from "../Modal/Modal";
 import Recorder from "../Recorder/Recorder";
 import { createJournal } from "../../events/Journals";
 import ColorBar from "../ColorBar/ColorBar";
 import { BLUE } from '../../config/constants';
+import AudioPlayer from "../AudioPlayer/AudioPlayer";
 
 const textAreaVariants = {
     focus: {
@@ -23,21 +24,33 @@ const JournalForm = ({ show, clickHandler, accessToken, journals, setJournals })
         source: ""
     });
     const [currentColor, setCurrentColor] = useState(BLUE);
-    const [showAudioJournal, setShowAudioJournal] = useState(false);
+
+    useEffect(() => {
+        return () => setAudioJournal({audio: null, source: ""});
+    }, []);
 
     const createJournalHandler = e => createJournal(accessToken, e, title, setTitle, caption, setCaption, audioJournal, setAudioJournal, journals, setJournals, currentColor, setCurrentColor);
-
     return(
         <>
             <Modal title="Create new journal" show={show} clickHandler={clickHandler}>
-                <input type="text" onChange={e => setTitle(e.target.value)} value={title} name="title" placeholder="Enter journal title" className="p-1 m-1 rounded border-2 border-grey-200 focus:border-blue-1 focus:outline-none"/>
-                <motion.textarea
-                    variants={textAreaVariants} 
-                    whileFocus="focus"
-                    exit="exit"
-                    onChange={e => setCaption(e.target.value)} value={caption} name="title" placeholder="Enter journal caption" className="p-1 m-1 rounded resize-none border-2 border-grey-200 focus:border-blue-1 focus:outline-none"/>
+                <div className="flex w-full items-center relative top-0">
+                    <input type="text" onChange={e => setTitle(e.target.value)} value={title} name="title" placeholder="Enter journal title" className="pt-1 pr-10 pb-1 pl-1 m-1 w-full rounded border-2 border-grey-200 focus:border-blue-1 focus:outline-none"/>
+                    <h1 className="absolute left-[92%] text-sm text-gray-400">{title.length.toString().padStart(3,0)}</h1>
+                </div>
+                <div className="flex w-full items-center relative top-0">
+                    <motion.textarea
+                        variants={textAreaVariants} 
+                        whileFocus="focus"
+                        exit="exit"
+                        onChange={e => setCaption(e.target.value)} value={caption} name="title" placeholder="Enter journal caption" className="pt-1 pr-10 pb-1 pl-1 m-1 w-full rounded resize-none border-2 border-grey-200 focus:border-blue-1 focus:outline-none"/>
+                    <h1 className="absolute left-[92%] top-[10%] text-sm text-gray-400">{caption.length.toString().padStart(3,0)}</h1>
+                </div>
                 <ColorBar currentColor={currentColor} setCurrentColor={setCurrentColor}/>
-                <Recorder setAudioJournal={setAudioJournal}/>
+                { audioJournal.source && <AudioPlayer source={audioJournal.source}/> }
+                <Recorder 
+                    setAudioJournal={setAudioJournal}
+                    shouldOutput={true}    
+                />
                 <input type="submit" value={"Save journal"} className={BIG_BLUE_BUTTON} onClick={createJournalHandler}/>        
             </Modal>
         </>
