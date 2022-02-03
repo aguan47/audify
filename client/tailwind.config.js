@@ -90,6 +90,9 @@ module.exports = {
         '1/4': '25%',
         '2/4': '50%',
         '3/4': '75%'
+      },
+      gridTemplateColumns: {
+        'audio-player': '5% 40% 20% 5% 30%'
       }
     }
   },

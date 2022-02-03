@@ -11,7 +11,6 @@ import JournalList from "../../components/JournalList/JournalList";
 import Loader from "../../components/Loader/Loader";
 
 
-
 const JournalPage = () => {
     document.title = `Your journals | Audify`;
     
@@ -28,7 +27,7 @@ const JournalPage = () => {
     }, []);
 
     const escapeHandler = e => escapeToCloseModal(e, showNewJournal, setShowNewJournal);
-    console.log(journals);
+
     return (
         <>
             <div onKeyDown={e => escapeHandler(e)} tabIndex={0}>

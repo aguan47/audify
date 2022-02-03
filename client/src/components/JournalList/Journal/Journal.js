@@ -1,6 +1,8 @@
 import moment from 'moment';
 import { BLUE, GREEN, RED } from '../../../config/constants';
 import { BLUE_JOURNAL, GREEN_JOURNAL, RED_JOURNAL, YELLOW_JOURNAL } from '../../../tailwind/tailwind';
+import { GMTToLocal } from '../../../utlities/helper';
+import AudioPlayer from '../../AudioPlayer/AudioPlayer';
 
 
 const Journal = ({title, caption, audioSource, createDate, color}) => {
@@ -26,13 +28,11 @@ const Journal = ({title, caption, audioSource, createDate, color}) => {
             <div className='mx-5 p-1'>
                 <div className="flex justify-between">
                     <h1 className="text-2xl font-bold">{title}</h1>
-                    <p>{moment(new Date(createDate)).fromNow()}</p>
+                    <p className='my-2'>{moment(GMTToLocal(createDate)).fromNow()}</p>
                 </div>
                 <p>{caption}</p>
             </div>
-            <audio controls>
-                <source src={audioSource}/>
-            </audio>
+            <AudioPlayer source={audioSource} color={color}/>
         </div>
     );
 } 

@@ -25,7 +25,6 @@ const JournalForm = ({ show, clickHandler, accessToken, journals, setJournals })
     const [currentColor, setCurrentColor] = useState(BLUE);
     const [showAudioJournal, setShowAudioJournal] = useState(false);
 
-    console.log(currentColor);
     const createJournalHandler = e => createJournal(accessToken, e, title, setTitle, caption, setCaption, audioJournal, setAudioJournal, journals, setJournals, currentColor, setCurrentColor);
 
     return(

@@ -1,0 +1,339 @@
+.VolumeSlider {
+    -webkit-appearance: none;
+    width: 100%;
+    background: transparent;
+}
+
+.VolumeSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+}
+
+.VolumeSlider:focus {
+    outline: none;
+}
+
+.VolumeSlider::-ms-track {
+    width: 100%;
+    cursor: pointer;
+
+    /* Hides the slider so custom styles can be added */
+    background: transparent; 
+    border-color: transparent;
+    color: transparent;
+}
+
+.RedPlayer::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: 1px solid #CF343A;
+    height: 18px;
+    width: 18px;
+    border-radius: 999px;
+    background: #CF343A;
+    margin-top: -0.4rem;
+    cursor: pointer;
+}
+  
+/* All the same stuff for Firefox */
+.RedPlayer::-moz-range-thumb {
+    border: 1px solid #CF343A;
+    height: 18px;
+    width: 18px;
+    border-radius: 999px;
+    background: #CF343A;
+    cursor: pointer;
+}
+  
+  /* All the same stuff for IE */
+.RedPlayer::-ms-thumb {
+    border: 1px solid #CF343A;
+    height: 18px;
+    width: 18px;
+    border-radius: 999px;
+    background: #CF343A;
+    cursor: pointer;
+}
+
+.BluePlayer::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: 1px solid #4a84f0;
+    height: 18px;
+    width: 18px;
+    border-radius: 999px;
+    background: #4a84f0;
+    cursor: pointer;
+    margin-top: -0.4rem;
+}
+  
+/* All the same stuff for Firefox */
+.BluePlayer::-moz-range-thumb {
+    border: 1px solid #4a84f0;
+    height: 18px;
+    width: 18px;
+    border-radius: 999px;
+    background: #4a84f0;
+    cursor: pointer;
+}
+  
+  /* All the same stuff for IE */
+.BluePlayer::-ms-thumb {
+    border: 1px solid #4a84f0;
+    height: 18px;
+    width: 18px;
+    border-radius: 999px;
+    background: #4a84f0;
+    cursor: pointer;
+}
+
+.GreenPlayer::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: 1px solid #1BB15A;
+    height: 18px;
+    width: 18px;
+    border-radius: 999px;
+    background: #1BB15A;
+    cursor: pointer;
+    margin-top: -0.4rem;
+}
+  
+/* All the same stuff for Firefox */
+.GreenPlayer::-moz-range-thumb {
+    border: 1px solid #1BB15A;
+    height: 18px;
+    width: 18px;
+    border-radius: 999px;
+    background: #1BB15A;
+    cursor: pointer;
+}
+  
+  /* All the same stuff for IE */
+.GreenPlayer::-ms-thumb {
+    border: 1px solid #1BB15A;
+    height: 18px;
+    width: 18px;
+    border-radius: 999px;
+    background: #1BB15A;
+    cursor: pointer;
+}
+
+.YellowPlayer::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: 1px solid #ecb908;
+    height: 18px;
+    width: 18px;
+    border-radius: 999px;
+    background: #ecb908;
+    cursor: pointer;
+    margin-top: -0.4rem;
+}
+  
+/* All the same stuff for Firefox */
+.YellowPlayer::-moz-range-thumb {
+    border: 1px solid #ecb908;
+    height: 18px;
+    width: 18px;
+    border-radius: 999px;
+    background: #ecb908;
+    cursor: pointer;
+}
+  
+  /* All the same stuff for IE */
+.YellowPlayer::-ms-thumb {
+    border: 1px solid #ecb908;
+    height: 18px;
+    width: 18px;
+    border-radius: 999px;
+    background: #ecb908;
+    cursor: pointer;
+}
+
+.RedPlayer::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4.2px;
+    cursor: pointer;
+    background: #CF343A;
+    border-radius: 1.3px;
+    border-radius: 5px;
+}
+
+.RedPlayer:focus::-webkit-slider-runnable-track {
+    background: #CF343A;
+}
+  
+.RedPlayer::-moz-range-track {
+    width: 100%;
+    height: 4.2px;
+    cursor: pointer;
+    background: #CF343A;
+    border-radius: 1.3px;
+    border-radius: 5px;
+}
+  
+.RedPlayer::-ms-track {
+    width: 100%;
+    height: 4.2px;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    border-width: 16px 0;
+    color: transparent;
+    border-radius: 5px;
+}
+.RedPlayer::-ms-fill-lower {
+    background: #CF343A;
+    border-radius: 5px;
+}
+.RedPlayer:focus::-ms-fill-lower {
+    background: #CF343A;
+}
+.RedPlayer::-ms-fill-upper {
+    background: #CF343A;
+    border-radius: 5px;
+}
+.RedPlayer:focus::-ms-fill-upper {
+    background: #CF343A;
+}
+
+
+.BluePlayer::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4.2px;
+    cursor: pointer;
+    background: #4a84f0;
+    border-radius: 1.3px;
+    border-radius: 5px;
+}
+
+.BluePlayer:focus::-webkit-slider-runnable-track {
+    background: #4a84f0;
+}
+  
+.BluePlayer::-moz-range-track {
+    width: 100%;
+    height: 4.2px;
+    cursor: pointer;
+    background: #4a84f0;
+    border-radius: 1.3px;
+    border-radius: 5px;
+}
+  
+.BluePlayer::-ms-track {
+    width: 100%;
+    height: 4.2px;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    border-width: 16px 0;
+    color: transparent;
+    border-radius: 5px;
+}
+.BluePlayer::-ms-fill-lower {
+    background: #4a84f0;
+    border-radius: 5px;
+}
+.BluePlayer:focus::-ms-fill-lower {
+    background: #4a84f0;
+}
+.BluePlayer::-ms-fill-upper {
+    background: #4a84f0;
+    border-radius: 5px;
+}
+.BluePlayer:focus::-ms-fill-upper {
+    background: #4a84f0;
+}
+
+
+
+.GreenPlayer::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4.2px;
+    cursor: pointer;
+    background: #1BB15A;
+    border-radius: 1.3px;
+    border-radius: 5px;
+}
+
+.GreenPlayer:focus::-webkit-slider-runnable-track {
+    background: #1BB15A;
+}
+  
+.GreenPlayer::-moz-range-track {
+    width: 100%;
+    height: 4.2px;
+    cursor: pointer;
+    background: #1BB15A;
+    border-radius: 1.3px;
+    border-radius: 5px;
+}
+  
+.GreenPlayer::-ms-track {
+    width: 100%;
+    height: 4.2px;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    border-width: 16px 0;
+    color: transparent;
+    border-radius: 5px;
+}
+.GreenPlayer::-ms-fill-lower {
+    background: #1BB15A;
+    border-radius: 5px;
+}
+.GreenPlayer:focus::-ms-fill-lower {
+    background: #1BB15A;
+}
+.GreenPlayer::-ms-fill-upper {
+    background: #1BB15A;
+    border-radius: 5px;
+}
+.GreenPlayer:focus::-ms-fill-upper {
+    background: #1BB15A;
+}
+
+
+.YellowPlayer::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4.2px;
+    cursor: pointer;
+    background: #ecb908;
+    border-radius: 1.3px;
+    border-radius: 5px;
+}
+
+.YellowPlayer:focus::-webkit-slider-runnable-track {
+    background: #ecb908;
+}
+  
+.YellowPlayer::-moz-range-track {
+    width: 100%;
+    height: 4.2px;
+    cursor: pointer;
+    background: #ecb908;
+    border-radius: 1.3px;
+    border-radius: 5px;
+}
+  
+.YellowPlayer::-ms-track {
+    width: 100%;
+    height: 4.2px;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    border-width: 16px 0;
+    color: transparent;
+    border-radius: 5px;
+}
+.YellowPlayer::-ms-fill-lower {
+    background: #ecb908;
+    border-radius: 5px;
+}
+.YellowPlayer:focus::-ms-fill-lower {
+    background: #ecb908;
+}
+.YellowPlayer::-ms-fill-upper {
+    background: #ecb908;
+    border-radius: 5px;
+}
+.YellowPlayer:focus::-ms-fill-upper {
+    background: #ecb908;
+}
