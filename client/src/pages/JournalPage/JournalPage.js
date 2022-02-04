@@ -27,7 +27,7 @@ const JournalPage = () => {
     }, []);
 
     const escapeHandler = e => escapeToCloseModal(e, showNewJournal, setShowNewJournal);
-    console.log(journals);
+
     return (
         <>
             <div onKeyDown={e => escapeHandler(e)} tabIndex={0}>

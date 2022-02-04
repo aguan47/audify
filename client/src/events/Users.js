@@ -1,4 +1,5 @@
 import axios, { createAuthorization, formDataHeader } from "../axios/axios";
+import { FULL_UPDATE_STATE } from "../reducer/actions/formActions";
 import { getKeyValueFromState } from "../utlities/helper";
 
 const getUserData = async (accessToken, state, setProfile, setInitialInputState) => {       // Get user information such as their birthday, name (all except profile picture)
@@ -23,7 +24,7 @@ export const getUserInformation = async (user, state, setProfile, setInitialInpu
     }
 }
 
-export const editUserInformation = async (e, user, setUser, state, profile, messageState, setMessageState, setInitialInputState, setIsLoading, initialProfilePicture, setInitialProfilePicture, profilePicture) => {
+export const editUserInformation = async (e, user, setUser, state, dispatch, messageState, setMessageState, initialInputState, setInitialInputState, setIsLoading, initialProfilePicture, setInitialProfilePicture, profilePicture) => {
     e.preventDefault();
     const updatedProfile = getKeyValueFromState(state);
     setIsLoading(true);
@@ -36,6 +37,7 @@ export const editUserInformation = async (e, user, setUser, state, profile, mess
         setInitialProfilePicture({image: profilePicture.image, source: profilePicture.source});
         setMessageState({...messageState, showMessage: true, message: "Successfully updated your profile", isError: false});
     } catch({ response }) {
+        dispatch({type: FULL_UPDATE_STATE, newState: initialInputState});
         setMessageState({...messageState, showMessage: true, message: response.data.message, isError: true});
     } finally {
         setIsLoading(false);

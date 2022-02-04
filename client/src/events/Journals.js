@@ -20,9 +20,10 @@ const modifyJournalPath = (journals) => {
     });
 }
 
-export const createJournal = async (accessToken, e, title, setTitle, caption, setCaption, audioJournal, setAudioJournal, journals, setJournals, currentColor, setCurrentColor) => {
+export const createJournal = async (accessToken, e, title, setTitle, caption, setCaption, audioJournal, setAudioJournal, journals, setJournals, currentColor, setCurrentColor, messageState, setMessageState) => {
     e.preventDefault();
     const journalData = createJournalData(title, caption, audioJournal, currentColor);
+    setMessageState({message: "", showMessage: false, isError: messageState.isError});
     try {
         const { data } = await axios.post("/journals/", journalData, formDataHeader(accessToken));
         setTitle("");
@@ -30,8 +31,9 @@ export const createJournal = async (accessToken, e, title, setTitle, caption, se
         setAudioJournal({audio: null, source: ""});
         setCurrentColor(BLUE);
         setJournals([...journals, createNewJournalEntryData(data.journal)]);
+        setMessageState({message: "Created new journal!", isError: false, showMessage: true});
     } catch({response}) {
-        console.log(response.data.message);
+        setMessageState({message: response.data.message, isError: true, showMessage: true});
     }
 }
 

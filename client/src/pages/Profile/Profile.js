@@ -42,7 +42,7 @@ const Profile = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [messageState, setMessageState] = useState({
         showMessage: false,
-        setMessageState: "",
+        message: "",
         isError: false
     });
     const [state, dispatch] = useReducer(formReducer, editProfileState);
@@ -69,9 +69,11 @@ const Profile = () => {
             setIsLoading(false);
         }, 500);
     }, [isEdit]);
-
-    const editEventHandler = () => editBtnHandler(state, isEdit, setIsEdit, buttonState, setButtonState);
-    const submitHandler = e => editUserInformation(e, user, setUser, state, profile, messageState, setMessageState, setInitialInputState, setIsLoading, initialProfilePicture, setInitialProfilePicture, profilePicture);
+    
+    const editEventHandler = () => editBtnHandler(state, isEdit, setIsEdit, buttonState, setButtonState, setMessageState, messageState);
+    const submitHandler = async e => {
+        await editUserInformation(e, user, setUser, state, dispatch, messageState, setMessageState, initialInputState, setInitialInputState, setIsLoading, initialProfilePicture, setInitialProfilePicture, profilePicture);
+    } 
     const changePictureHandler = e => loadPicture(e, setProfilePicture);
 
     return (
@@ -80,7 +82,7 @@ const Profile = () => {
             <Container>
                 <div className="flex flex-col justify-center items-center">
                     <Banner message={messageState.message} show={messageState.showMessage} isError={messageState.isError} />
-                    <EditButton buttonState={buttonState} editEventHandler={editEventHandler} />
+                            <EditButton buttonState={buttonState} editEventHandler={editEventHandler} />
                     {
                         isLoading ? <Loader/> :
                         <>
@@ -94,10 +96,11 @@ const Profile = () => {
     );
 }
 
-const editBtnHandler = (state,isEdit, setIsEdit, buttonState, setButtonState) => {
+const editBtnHandler = (state,isEdit, setIsEdit, buttonState, setButtonState, setMessageState, messageState) => {
     setIsEdit(!isEdit);
     if (!isEdit) {
         setButtonState({...buttonState, buttonClass: RED_BUTTON, buttonText: "Don't save changes"});
+        setMessageState({...messageState, showMessage: false, message: "", isError: false});
     } else {
         setButtonState({...buttonState, buttonClass: BLUE_BUTTON, buttonText: "Edit Profile"});
     }

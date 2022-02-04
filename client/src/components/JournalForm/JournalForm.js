@@ -7,6 +7,7 @@ import { createJournal } from "../../events/Journals";
 import ColorBar from "../ColorBar/ColorBar";
 import { BLUE } from '../../config/constants';
 import AudioPlayer from "../AudioPlayer/AudioPlayer";
+import Toast from "../Toast/Toast";
 
 const textAreaVariants = {
     focus: {
@@ -24,12 +25,20 @@ const JournalForm = ({ show, clickHandler, accessToken, journals, setJournals })
         source: ""
     });
     const [currentColor, setCurrentColor] = useState(BLUE);
-
+    const [messageState, setMessageState] = useState({
+        message: "", showMessage: false, isError: false
+    });
+    
     useEffect(() => {
-        return () => setAudioJournal({audio: null, source: ""});
-    }, []);
+        if (show) return;
+        setMessageState({ message: "", showMessage: false, isError: false });
+        setTitle("");
+        setAudioJournal({audio: null, source: ""});
+        setCaption("");
+    }, [show])
 
-    const createJournalHandler = e => createJournal(accessToken, e, title, setTitle, caption, setCaption, audioJournal, setAudioJournal, journals, setJournals, currentColor, setCurrentColor);
+    const createJournalHandler = e => createJournal(accessToken, e, title, setTitle, caption, setCaption, audioJournal, setAudioJournal, journals, setJournals, currentColor, setCurrentColor, messageState, setMessageState);
+    
     return(
         <>
             <Modal title="Create new journal" show={show} clickHandler={clickHandler}>
@@ -52,6 +61,12 @@ const JournalForm = ({ show, clickHandler, accessToken, journals, setJournals })
                     shouldOutput={true}    
                 />
                 <input type="submit" value={"Save journal"} className={BIG_BLUE_BUTTON} onClick={createJournalHandler}/>        
+            <Toast 
+                show={messageState.showMessage} 
+                message={messageState.message} 
+                isError={messageState.isError}
+                className={"absolute bottom-0"}    
+            />
             </Modal>
         </>
 
