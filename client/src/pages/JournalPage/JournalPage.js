@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Container from "../../components/Container/Container";
 import JournalForm from "../../components/JournalForm/JournalForm";
 import AuthNavBar from "../../components/NavBar/AuthNavBar";
@@ -9,7 +9,8 @@ import { BLUE_BUTTON, HOLLOW_BLUE_BUTTON } from "../../tailwind/tailwind";
 import UserContext from '../../context/UserContext';
 import JournalList from "../../components/JournalList/JournalList";
 import Loader from "../../components/Loader/Loader";
-
+import SortModal from "../../components/SortModal/SortModal";
+import { BLUE } from "../../config/constants";
 
 const JournalPage = () => {
     document.title = `Your journals | Audify`;
@@ -18,15 +19,20 @@ const JournalPage = () => {
     const [showSort, setShowSort] = useState(false);
     const [journals, setJournals] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [isAscending, setIsAscending] = useState(false);
+    const [shouldColorFilter, setShouldColorFilter] = useState(false);
+    const [currentColor, setCurrentColor] = useState(BLUE);
     const { user } = useContext(UserContext);
+
+    const allJournalsRef = useRef(null);
 
     useEffect(() => {
         setTimeout(() => {
-            getJournals(user.accessToken, setJournals, setIsLoading);
+            getJournals(user.accessToken, setJournals, setIsLoading, allJournalsRef);
         }, 500);
     }, []);
 
-    const escapeHandler = e => escapeToCloseModal(e, showNewJournal, setShowNewJournal);
+    const escapeHandler = e => escapeToCloseModal(e, showNewJournal, setShowNewJournal, showSort, setShowSort);
 
     return (
         <>
@@ -51,6 +57,22 @@ const JournalPage = () => {
                     accessToken={user.accessToken}
                     journals={journals}
                     setJournals={setJournals}
+                    allJournalsRef={allJournalsRef}
+                    shouldColorFilter={shouldColorFilter}
+                    filterColor={currentColor}
+                    isAscending={isAscending}
+                />
+                <SortModal 
+                    show={showSort} 
+                    clickHandler={() => setShowSort(false)} 
+                    journals={allJournalsRef.current}
+                    setJournals={setJournals}
+                    isAscending={isAscending}
+                    setIsAscending={setIsAscending}
+                    shouldColorFilter={shouldColorFilter}
+                    setShouldColorFilter={setShouldColorFilter}
+                    currentColor={currentColor}
+                    setCurrentColor={setCurrentColor}
                 />
             </div>
         </>

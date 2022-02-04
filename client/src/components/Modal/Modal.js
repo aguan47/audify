@@ -1,10 +1,14 @@
+import { useEffect } from "react";
+
 const Modal = props => {
 
-    if (props.show) {       // just to disable scrolling
-        document.querySelector('body').style.overflow = 'hidden';
-    } else {
-        document.querySelector('body').style.overflow = 'auto';
-    }
+    useEffect(() => {
+        if (props.show) {
+            document.querySelector('body').style.overflow = 'hidden';
+        } else {
+            document.querySelector('body').style.overflow = 'auto';
+        }
+    }, [props.show]);
 
     return (
             <>
