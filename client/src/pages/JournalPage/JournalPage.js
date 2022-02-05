@@ -32,7 +32,13 @@ const JournalPage = () => {
         }, 500);
     }, []);
 
-    const escapeHandler = e => escapeToCloseModal(e, showNewJournal, setShowNewJournal, showSort, setShowSort);
+    const escapeHandler = e => {
+        if (showNewJournal) {
+            escapeToCloseModal(e, setShowNewJournal);
+        } else if (showSort) {
+            escapeToCloseModal(e, setShowSort);
+        }
+    }
 
     return (
         <>

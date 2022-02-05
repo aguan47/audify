@@ -14,6 +14,7 @@ import { BLUE_BUTTON, RED_BUTTON, HOLLOW_RED_BUTTON } from "../../tailwind/tailw
 import ProfileOptions from "./ProfileOptions/ProfileOptions";
 import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
 import { useNavigate } from "react-router";
+import { escapeToCloseModal } from "../../events/Keys";
 
 
 
@@ -74,33 +75,36 @@ const Profile = () => {
     } 
     const changePictureHandler = e => loadPicture(e, setProfilePicture);
     const deleteEventHandler = () => deleteUserProfile(user.accessToken, navigate, setUser);
+    const escapeHandler = e => escapeToCloseModal(e, setShowDeleteModal);
 
     return (
         <>
-            <AuthNavBar/>
-            <Container>
-                <div className="flex flex-col justify-center items-center">
-                    <Banner message={messageState.message} show={messageState.showMessage} isError={messageState.isError} />
-                    <ProfileOptions buttonState={buttonState} editEventHandler={editEventHandler} deleteEventHandler={() => setShowDeleteModal(true)} />
-                    {
-                        isLoading ? <Loader/> :
-                        <>
-                            <ProfilePicture isEdit={isEdit} profilePicture={profilePicture.source} changePictureHandler={changePictureHandler}/>
-                            <Forms fields={state} submitText={"Save changes"} dispatch={dispatch} submit={submitHandler} canSubmit={isEdit}/>
-                        </>
-                    }
-                </div>
-            </Container>
-            <ConfirmationModal 
-                show={showDeleteModal} 
-                clickHandler={() => setShowDeleteModal(false)} 
-                body={"Are you sure you want to to delete your account? You will lose all your journals."}
-                disagreeBtnStyle={HOLLOW_RED_BUTTON}
-                agreeBtnStyle={RED_BUTTON}
-                agreeBtnText={"Yes, delete my account"}
-                disagreeHandler={() => setShowDeleteModal(false)}
-                agreeHandler={deleteEventHandler}
-            />
+            <div onKeyDown={e => escapeHandler(e)} tabIndex={0}>
+                <AuthNavBar/>
+                <Container>
+                    <div className="flex flex-col justify-center items-center">
+                        <Banner message={messageState.message} show={messageState.showMessage} isError={messageState.isError} />
+                        <ProfileOptions buttonState={buttonState} editEventHandler={editEventHandler} deleteEventHandler={() => setShowDeleteModal(true)} />
+                        {
+                            isLoading ? <Loader/> :
+                            <>
+                                <ProfilePicture isEdit={isEdit} profilePicture={profilePicture.source} changePictureHandler={changePictureHandler}/>
+                                <Forms fields={state} submitText={"Save changes"} dispatch={dispatch} submit={submitHandler} canSubmit={isEdit}/>
+                            </>
+                        }
+                    </div>
+                </Container>
+                <ConfirmationModal 
+                    show={showDeleteModal} 
+                    clickHandler={() => setShowDeleteModal(false)} 
+                    body={"Are you sure you want to to delete your account? You will lose all your journals."}
+                    disagreeBtnStyle={HOLLOW_RED_BUTTON}
+                    agreeBtnStyle={RED_BUTTON}
+                    agreeBtnText={"Yes, delete my account"}
+                    disagreeHandler={() => setShowDeleteModal(false)}
+                    agreeHandler={deleteEventHandler}
+                />
+            </div>
         </>
     );
 }
