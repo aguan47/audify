@@ -17,7 +17,7 @@ const textAreaVariants = {
     }
 }
 
-const JournalForm = ({ show, clickHandler, accessToken, journals, setJournals, allJournalsRef, shouldColorFilter, filterColor, isAscending }) => {
+const JournalModal = ({ show, clickHandler, accessToken, journals, setJournals, allJournalsRef, shouldColorFilter, filterColor, isAscending }) => {
 
     const [title, setTitle] = useState("");
     const [caption, setCaption] = useState("");
@@ -81,4 +81,4 @@ const JournalForm = ({ show, clickHandler, accessToken, journals, setJournals, a
     );
 }
 
-export default JournalForm;
+export default JournalModal;

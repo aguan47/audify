@@ -1,6 +1,7 @@
 import axios, { createAuthorization, formDataHeader } from "../axios/axios";
+import { ACCESS_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from "../config/constants";
 import { FULL_UPDATE_STATE } from "../reducer/actions/formActions";
-import { getKeyValueFromState } from "../utlities/helper";
+import { deleteCookie, getKeyValueFromState } from "../utlities/helper";
 
 const getUserData = async (accessToken, state, setProfile, setInitialInputState) => {       // Get user information such as their birthday, name (all except profile picture)
     let { data } = await axios.get("/users/", createAuthorization(accessToken));
@@ -49,4 +50,17 @@ const editProfilePicture = async (accessToken, profilePicture, initialProfilePic
     const profilePictureData = new FormData();
     profilePictureData.append('profilePicture', profilePicture.image);
     await axios.put('/users/profile_picture', profilePictureData, formDataHeader(accessToken));    
+}
+
+export const deleteUserProfile = async(accessToken, navigate, setUser) => {
+    try {
+        await axios.delete('/users/', createAuthorization(accessToken));
+        // Delete the cookies
+        deleteCookie(ACCESS_TOKEN_COOKIE);
+        deleteCookie(REFRESH_TOKEN_COOKIE);
+        setUser({ name: "", isAuth: false, accessToken: "", refreshToken: ""});
+        navigate('/');
+    } catch({response}) {
+        console.log(response.data.message);
+    }
 }

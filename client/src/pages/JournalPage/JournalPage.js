@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import Container from "../../components/Container/Container";
-import JournalForm from "../../components/JournalForm/JournalForm";
+import JournalModal from "../../components/JournalModal/JournalModal";
 import AuthNavBar from "../../components/NavBar/AuthNavBar";
 import NoData from "../../components/NoData/NoData";
 import { getJournals } from "../../events/Journals";
@@ -51,7 +51,7 @@ const JournalPage = () => {
                         </>
                     }
                 </Container>
-                <JournalForm 
+                <JournalModal 
                     show={showNewJournal} 
                     clickHandler={() => setShowNewJournal(false)}
                     accessToken={user.accessToken}

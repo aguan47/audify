@@ -1,6 +1,6 @@
 const db = require('../knex.js');
 
-const saveNewUserInformation = async body => {
+const saveUserInfoToDB = async body => {
     const { name, birthday, password, email } = body;
 
     return await db('users')
@@ -14,35 +14,50 @@ const saveNewUserInformation = async body => {
     });
 }
 
-const retrieveUserInfoByEmail = async email => {
+const getUserByEmailInDB = async email => {
     return await db('users')
     .select('user_id', 'email', 'name', 'password')
-    .where('email', '=', email);
+    .where({
+        'email': email,
+        'is_deleted': 0
+    });
 }
 
-const retrieveJSONPayload = async id => {
+const getUserIdentifiersFromDB = async id => {
     return await db('users')
     .select('user_id', 'email', 'name')
-    .where('user_id', '=', id);
+    .where({
+        'user_id': id,
+        'is_deleted': 0
+    });
 }
 
-const retrieveUserInformation = async id => {
+const getUserDataFromDB = async id => {
     return await db('users')
     .select('name', 'email', 'birthday', 'bio', 'join_date')
-    .where('user_id', '=', id);
+    .where({
+        'user_id': id,
+        'is_deleted': 0
+    });
 }
 
-const retrieveProfilePicture = async id => {
+const getUserProfilePictureFromDB = async id => {
     return await db('users')
     .select('profile_picture_path')
-    .where('user_id', '=', id);
+    .where({
+        'user_id': id,
+        'is_deleted': 0
+    });
 }
 
-const editUserInformation = async (id, body) => {
+const editUserDataToDB = async (id, body) => {
     const { name, birthday, email, bio } = body;
 
     return await db('users')
-    .where('user_id', '=', id)
+    .where({
+        'user_id': id,
+        'is_deleted': 0
+    })
     .update({
         name: name,
         birthday: birthday,
@@ -51,20 +66,35 @@ const editUserInformation = async (id, body) => {
     });
 }
 
-const editUserProfilePicture = async(id, profilePicturePath) => {
+const editUserPictureToDB = async(id, profilePicturePath) => {
     return await db('users')
-    .where('user_id', '=', id)
+    .where({
+        'user_id': id,
+        'is_deleted': 0
+    })
     .update({
         profile_picture_path: profilePicturePath
     });
 }
 
+const deleteUserFromDB = async id => {
+    return await db('users')
+    .where({
+        'user_id': id,
+        'is_deleted': 0
+    })
+    .update({
+        is_deleted: 1
+    });
+}
+
 module.exports = {
-    saveNewUserInformation,
-    retrieveUserInfoByEmail,
-    retrieveJSONPayload,
-    retrieveUserInformation,
-    retrieveProfilePicture,
-    editUserInformation,
-    editUserProfilePicture
+    saveUserInfoToDB,
+    getUserByEmailInDB,
+    getUserIdentifiersFromDB,
+    getUserDataFromDB,
+    getUserProfilePictureFromDB,
+    editUserDataToDB,
+    editUserPictureToDB,
+    deleteUserFromDB
 };

@@ -105,7 +105,7 @@ const AudioPlayer = ({source, color}) => {
         <div className={style}>
             <div className="flex gap-x-2 mx-1 items-center">
                 <button onClick={() => setIsPlaying(!isPlaying)} className="flex items-center">
-                    <span className="material-icons text-4xl">{isPlaying ? "pause" : "play_arrow"}</span>
+                    <span className="!text-4xl material-icons">{isPlaying ? "pause" : "play_arrow"}</span>
                 </button>
                 <input 
                     type="range" 
@@ -120,7 +120,7 @@ const AudioPlayer = ({source, color}) => {
             </div>
             <div className="flex ">
                 <button onClick={() => setIsMuted(!isMuted)}>
-                    <span className="material-icons text-2xl">{isMuted || volume === 0 ? "volume_mute" : "volume_up"}</span>
+                    <span className="material-icons !text-3xl">{isMuted || volume === 0 ? "volume_mute" : "volume_up"}</span>
                 </button>
                 <input 
                     type="range"

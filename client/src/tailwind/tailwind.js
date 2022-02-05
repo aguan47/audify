@@ -1,7 +1,8 @@
-export const RED_BUTTON = "rounded-full bg-red-1 py-1 px-5 text-white hover:bg-red-2 transition font-bold cursor-pointer";
-export const BLUE_BUTTON = "rounded-full bg-blue-1 py-1 px-5 text-white hover:bg-blue-2 transition font-bold cursor-pointer";
+export const RED_BUTTON = "rounded-full bg-red-1 py-1 px-5 border-2 border-red-1 text-white hover:bg-red-2 hover:border-red-2 transition font-bold cursor-pointer";
+export const BLUE_BUTTON = "rounded-full bg-blue-1 py-1 border-2 border-blue-1 px-5 text-white hover:bg-blue-2 hover:border-blue-2 transition font-bold cursor-pointer";
 export const OFF_BUTTON = "rounded-full border-2 border-blue-1 py-1 px-5 text-blue-1 font-bold cursor-pointer";
-export const HOLLOW_BLUE_BUTTON = "rounded-full border-2 border-blue-1 py-1 px-5 text-blue-1 hover:bg-blue-1 hover:border-blue-0 hover:text-white transition font-bold";
+export const HOLLOW_BLUE_BUTTON = "rounded-full border-2 border-blue-1 py-1 px-5 text-blue-1 font-bold";
+export const HOLLOW_RED_BUTTON = "rounded-full border-2 border-red-1 py-1 px-5 text-red-1 font-bold";
 export const WHITE_BUTTON = "m-5 bg-white text-blue-1 py-3 px-5 rounded-full font-bold";
 export const BIG_BLUE_BUTTON = "bg-blue-1 text-white hover:bg-blue-2 transition cursor-pointer px-5 py-3 my-2 rounded-full font-bold";
 export const BIG_RED_BUTTON = "bg-red-1 text-white hover:bg-red-2 transition cursor-pointer px-5 py-3 my-2 rounded-full font-bold";

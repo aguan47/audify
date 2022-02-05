@@ -3,32 +3,38 @@ const { validateRequest } = require('./validation.js');
 const { newUserSchema, existingUserSchema, editUserSchema } = require('../db/schema/Users.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { saveNewUserInformation, retrieveUserInfoByEmail, retrieveUserInformation, editUserInformation, retrieveProfilePicture, editUserProfilePicture } = require('../db/models/Users.js');
+const { saveUserInfoToDB, 
+    getUserByEmailInDB, 
+    getUserDataFromDB, 
+    editUserDataToDB, 
+    getUserProfilePictureFromDB, 
+    editUserPictureToDB, 
+    deleteUserFromDB } = require('../db/models/Users.js');
 const { saveToRedis, deleteKeyRedis } = require('../utlities/utilities.js');
 
-const validateNewUser = async body => {
+const validateNewUserReqService = async body => {
     return await validateRequest(newUserSchema, body);
 }
 
-const validateExistingUser = async body => {
+const validateExistingUserReqService = async body => {
     return await validateRequest(existingUserSchema, body);
 }
 
-const validateEditProfile = async body => {
+const validateEditUserReqService = async body => {
     return await validateRequest(editUserSchema, body);
 }
 
-const secureSaveNewUser = async body => {
+const securelySaveNewUserService = async body => {
     const { password } = body;
 
     const saltedPassword = await bcrypt.hash(password, 10);
-    const userInfo = await saveNewUserInformation({...body, password: saltedPassword});
+    const userInfo = await saveUserInfoToDB({...body, password: saltedPassword});
 
     if (userInfo.length === 0) throw new Error('Error encountered when saving user information');
     return userInfo[0];
 }
 
-const issueTokens = payload => {
+const issueTokensService = payload => {
     // Payload is the name and email of the user
     // Tokens to be returned are the refresh and access tokens
     const oneDay = 60*60*24;
@@ -40,11 +46,11 @@ const issueTokens = payload => {
     return { accessToken, refreshToken, accessTokenLifespan: oneDay, refreshTokenLifespan: sixtyDays };
 }
 
-const logInUser = async body => {
+const logInUserService = async body => {
 
     const { email, password } = body;
 
-    const userInfo = await retrieveUserInfoByEmail(email);
+    const userInfo = await getUserByEmailInDB(email);
     if (userInfo.length === 0) throw new Error("User doesn't exists");
     
     const result = await bcrypt.compare(password, userInfo[0].password);
@@ -53,46 +59,51 @@ const logInUser = async body => {
     return userInfo[0];
 }
 
-const saveRefreshTokenToRedis = async (id, refreshToken) => {
+const saveTokenToRedisService = async (id, refreshToken) => {
     await saveToRedis(`${id}-refresh-token`, refreshToken);
 }
 
-const deleteRefreshTokensFromRedis = async key => {
+const deleteRefreshTokensFromRedisService = async key => {
     await deleteKeyRedis(key);
 }
 
-const getUserProfile = async id => {
-    const data = await retrieveUserInformation(id); 
+const getUserDataService = async id => {
+    const data = await getUserDataFromDB(id); 
     if (data.length === 0) throw new Error("User doesn't exists");
     return data[0];
 }
 
-const getUserProfilePicture = async id => {
-    const data = await retrieveProfilePicture(id);
+const getUserProfilePictureService = async id => {
+    const data = await getUserProfilePictureFromDB(id);
     if (data.length === 0) throw new Error("User doesn't exists");
     return data[0];
 }
 
-const editUserProfile = async (id, body) => {
-    await editUserInformation(id, body);
+const editUserDataService = async (id, body) => {
+    await editUserDataToDB(id, body);
 }
 
-const editUserAvatar = async(id, filename) => {
+const editUserProfilePictureService = async(id, filename) => {
     if (!filename) throw new Error('Invalid image. Try again');
-    await editUserProfilePicture(id, filename);
+    await editUserPictureToDB(id, filename);
+}
+
+const deleteUserProfileService = async(id) => {
+    await deleteUserFromDB(id);
 }
 
 module.exports = {
-    validateNewUser,
-    validateExistingUser,
-    validateEditProfile,
-    secureSaveNewUser,
-    issueTokens,
-    logInUser,
-    saveRefreshTokenToRedis,
-    deleteRefreshTokensFromRedis,
-    getUserProfile,
-    getUserProfilePicture,
-    editUserProfile,
-    editUserAvatar
+    validateNewUserReqService,
+    validateExistingUserReqService,
+    validateEditUserReqService,
+    securelySaveNewUserService,
+    issueTokensService,
+    logInUserService,
+    saveTokenToRedisService,
+    deleteRefreshTokensFromRedisService,
+    getUserDataService,
+    getUserProfilePictureService,
+    editUserDataService,
+    editUserProfilePictureService,
+    deleteUserProfileService
 };
