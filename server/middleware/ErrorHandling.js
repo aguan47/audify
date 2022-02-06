@@ -1,4 +1,5 @@
 const errorHandler = (error, req, res, next) => {
+    console.log(error);
     switch(error.name) {
         case 'ValidationError':
             return res.status(error.status).json({success: false, message: error.message});

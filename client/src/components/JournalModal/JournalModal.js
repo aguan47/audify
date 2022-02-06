@@ -1,23 +1,21 @@
-import { motion } from "framer-motion";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { BIG_BLUE_BUTTON } from "../../tailwind/tailwind";
 import Modal from "../Modal/Modal";
 import Recorder from "../Recorder/Recorder";
-import { createJournal } from "../../events/Journals";
+import { createJournal, createJournalData, editJournal, resetInputFields } from "../../events/Journals";
 import ColorBar from "../ColorBar/ColorBar";
 import { BLUE } from '../../config/constants';
 import AudioPlayer from "../AudioPlayer/AudioPlayer";
 import Toast from "../Toast/Toast";
 import Loader from '../Loader/Loader';
+import TitleInput from "./TitleInput/TitleInput";
+import CaptionInput from "./CaptionInput/CaptionInput";
 
-const textAreaVariants = {
-    focus: {
-        height: "150px", 
-        transition: {type: "tween"}
-    }
-}
 
-const JournalModal = ({ show, clickHandler, accessToken, journals, setJournals, allJournalsRef, shouldColorFilter, filterColor, isAscending }) => {
+
+const JournalModal = ({ show, clickHandler, accessToken, journals, setJournals, 
+    allJournalsRef, shouldColorFilter, filterColor, isAscending, isEdit, setIsEdit,
+    currentJournal}) => {
 
     const [title, setTitle] = useState("");
     const [caption, setCaption] = useState("");
@@ -30,6 +28,7 @@ const JournalModal = ({ show, clickHandler, accessToken, journals, setJournals, 
         message: "", showMessage: true, isError: false
     });
     const [isLoading, setIsLoading] = useState(false);
+    const [modalTitle, setModalTitle] = useState("Create a new journal");
     
     useEffect(() => {
         if (show) return;
@@ -38,35 +37,59 @@ const JournalModal = ({ show, clickHandler, accessToken, journals, setJournals, 
         setAudioJournal({audio: null, source: ""});
         setCaption("");
         setCurrentColor(BLUE);
+        setModalTitle("Create a new journal");
     }, [show])
 
-    const createJournalHandler = e => createJournal(accessToken, e, title, setTitle, caption, setCaption, audioJournal, setAudioJournal, journals, setJournals, currentColor, setCurrentColor, messageState, setMessageState, setIsLoading, allJournalsRef, shouldColorFilter, filterColor, isAscending);
+    useEffect(() => {
+        if (!isEdit) return;
+        setIsLoading(true);
+        setTitle(currentJournal.title);
+        setAudioJournal({audio: null, source: currentJournal.journal_path});
+        setCaption(currentJournal.caption);
+        setCurrentColor(currentJournal.color);
+        setModalTitle("Edit your journal");
+        setIsLoading(false);
+    }, [isEdit]);
+
+    const createJournalHandler = useCallback(e => {
+        const journalData = createJournalData(title, caption, audioJournal, currentColor);
+        setIsLoading(true);
+        createJournal(accessToken, e, journalData, journals, setJournals, messageState, setMessageState, 
+            allJournalsRef, shouldColorFilter, filterColor, isAscending);
+        if (!messageState.isError) resetInputFields(setTitle, setCaption, setAudioJournal, setCurrentColor);
+
+        setIsLoading(false);
+    }, [title, caption, audioJournal, journals, currentColor, messageState, allJournalsRef, shouldColorFilter, filterColor]);
     
+    const editJournalHandler = useCallback(e => {
+        const journalData = createJournalData(title, caption, audioJournal, currentColor);
+        setIsLoading(true);
+        editJournal(e, accessToken, currentJournal.journal_id, journalData, messageState, 
+            setMessageState, allJournalsRef, journals, setJournals);
+        if (!messageState.isError) resetInputFields(setTitle, setCaption, setAudioJournal, setCurrentColor);
+        
+        setIsLoading(false);
+        setIsEdit(false);
+        clickHandler();
+    }, [title, caption, audioJournal, currentColor]);
+
     return(
         <>
-            <Modal title="Create new journal" show={show} clickHandler={clickHandler}>
+            <Modal title={modalTitle} show={show} clickHandler={clickHandler}>
                 {
                     isLoading ? <Loader /> :
                     <>
-                        <div className="flex w-full items-center relative top-0">
-                            <input type="text" onChange={e => setTitle(e.target.value)} value={title} name="title" placeholder="Enter journal title" className="pt-1 pr-10 pb-1 pl-1 m-1 w-full rounded border-2 border-grey-200 focus:border-blue-1 focus:outline-none"/>
-                            <h1 className="absolute left-[92%] text-sm text-gray-400">{title.length.toString().padStart(3,0)}</h1>
-                        </div>
-                        <div className="flex w-full items-center relative top-0">
-                            <motion.textarea
-                                variants={textAreaVariants} 
-                                whileFocus="focus"
-                                exit="exit"
-                                onChange={e => setCaption(e.target.value)} value={caption} name="title" placeholder="Enter journal caption" className="pt-1 pr-10 pb-1 pl-1 m-1 w-full rounded resize-none border-2 border-grey-200 focus:border-blue-1 focus:outline-none"/>
-                            <h1 className="absolute left-[92%] top-[10%] text-sm text-gray-400">{caption.length.toString().padStart(3,0)}</h1>
-                        </div>
+                        <TitleInput title={title} titleHandler={e => setTitle(e.target.value)}/>
+                        <CaptionInput caption={caption} captionHandler={e => setCaption(e.target.value)} />
                         <ColorBar currentColor={currentColor} setCurrentColor={setCurrentColor}/>
                         { audioJournal.source && <AudioPlayer source={audioJournal.source}/> }
                         <Recorder 
                             setAudioJournal={setAudioJournal}
                             shouldOutput={true}    
                         />
-                        <input type="submit" value={"Save journal"} className={BIG_BLUE_BUTTON} onClick={createJournalHandler}/>        
+                        <input type="submit" value={"Save journal"} 
+                            className={BIG_BLUE_BUTTON} 
+                            onClick={isEdit ? editJournalHandler : createJournalHandler}/>        
                         <Toast 
                             show={messageState.showMessage} 
                             message={messageState.message} 
@@ -74,7 +97,6 @@ const JournalModal = ({ show, clickHandler, accessToken, journals, setJournals, 
                         />
                     </>
                 }
-                
             </Modal>
         </>
 

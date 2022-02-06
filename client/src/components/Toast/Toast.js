@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 const toastVariants = {
     initial: {
-        y: '200%'
+        y: '250%'
     },
     animate: {
         y: '0%',
@@ -12,7 +12,7 @@ const toastVariants = {
         }
     },
     exit: {
-        y: '200%',
+        y: '250%',
         transition: {
             style: 'tween'
         }
@@ -20,8 +20,8 @@ const toastVariants = {
 }
 
 const Toast = ({message, show, isError }) => {
-    let bannerDesign = "absolute bottom-[5%] left-0 right-0 mx-auto z-40 rounded-full text-center bg-red-1 text-white py-2 mb-2 w-max pl-5 flex justify-between";
-    if (!isError) bannerDesign = "absolute bottom-[5%] left-0 right-0 mx-auto z-40 rounded-full text-center bg-green-1 text-white py-2 mb-2 w-max pl-5 flex justify-between";
+    let bannerDesign = "absolute bottom-[-25%] left-0 right-0 mx-auto z-40 rounded-full text-center bg-red-1 text-white py-2 mb-2 w-max pl-5 flex justify-between";
+    if (!isError) bannerDesign = "absolute bottom-[-25%] left-0 right-0 mx-auto z-40 rounded-full text-center bg-green-1 text-white py-2 mb-2 w-max pl-5 flex justify-between";
 
     const [ShowToast, setShowToast] = useState(false);
 

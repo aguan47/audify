@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import Container from "../../components/Container/Container";
 import JournalModal from "../../components/JournalModal/JournalModal";
 import AuthNavBar from "../../components/NavBar/AuthNavBar";
@@ -16,17 +16,18 @@ import ConfirmationModal from '../../components/ConfirmationModal/ConfirmationMo
 const JournalPage = () => {
     document.title = `Your journals | Audify`;
     
-    const [showNewJournal, setShowNewJournal] = useState(false);
+    const [showJournalForm, setShowJournalForm] = useState(false);
     const [showSort, setShowSort] = useState(false);
     const [showDeleteJournal, setShowDeleteJournal] = useState(false);
     const [journals, setJournals] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [isAscending, setIsAscending] = useState(false);
+    const [isAscending, setIsAscending] = useState(true);
     const [shouldColorFilter, setShouldColorFilter] = useState(false);
     const [currentColor, setCurrentColor] = useState(BLUE);
     const [currentJournal, setCurrentJournal] = useState(null);
+    const [isEdit, setIsEdit] = useState(false);
     const { user } = useContext(UserContext);
-
+    
     const allJournalsRef = useRef(null);
 
     useEffect(() => {
@@ -35,17 +36,38 @@ const JournalPage = () => {
         }, 500);
     }, []);
 
-    const escapeHandler = e => {
-        if (showNewJournal) {
-            escapeToCloseModal(e, setShowNewJournal);
+    const escapeHandler = useCallback(e => {
+        const escapeKeyCode = 27;   // shortcut for escape
+        if (showJournalForm) {
+            escapeToCloseModal(e, setShowJournalForm);
+            if (isEdit && e.keyCode === escapeKeyCode) {
+                setIsEdit(false);
+                setCurrentJournal(null);
+            }
         } else if (showSort) {
             escapeToCloseModal(e, setShowSort);
         } else if (showDeleteJournal) {
             escapeToCloseModal(e, setShowDeleteJournal);
         }
+    }, [showJournalForm, showSort, showDeleteJournal]);
+
+    const deleteJournalHandler = useCallback(() => {
+        deleteJournal(user.accessToken, currentJournal.journal_id, allJournalsRef, journals, setJournals, setShowDeleteJournal)
+        setCurrentJournal(null);
+    }, [user.accessToken, currentJournal, allJournalsRef, journals, setJournals, setShowDeleteJournal]);
+    const editJournalHandler = useCallback(selectedJournal => {
+        setShowJournalForm(true);
+        setIsEdit(true);
+        setCurrentJournal(selectedJournal);
+    }, []);
+
+    const showNewJournalHandler = () => setShowJournalForm(false);
+    const showEditJournalHandler = () => {
+        setShowJournalForm(false);
+        setIsEdit(false);
+        setCurrentJournal(null);
     }
 
-    const deleteJournalHandler = () => deleteJournal(user.accessToken, currentJournal, allJournalsRef, journals, setJournals, setShowDeleteJournal);
     console.log(journals);
 
     return (
@@ -55,7 +77,7 @@ const JournalPage = () => {
                 <Container>
                     <div className="px-10 py-1 flex gap-x-2">
                         <button className={HOLLOW_BLUE_BUTTON} onClick={() => setShowSort(true)}>Sort journals</button>
-                        <button className={BLUE_BUTTON} onClick={() => setShowNewJournal(true)}>Create new journal</button>
+                        <button className={BLUE_BUTTON} onClick={() => setShowJournalForm(true)}>Create new journal</button>
                     </div>
                     { isLoading && <div className="w-screen flex justify-center items-center"><Loader/></div> }
                     {
@@ -67,14 +89,15 @@ const JournalPage = () => {
                                     currentJournal={currentJournal}
                                     setCurrentJournal={setCurrentJournal}
                                     setShowDeleteModal={() => setShowDeleteJournal(true)}
+                                    setEditJournalModal={editJournalHandler}
                                 /> : 
                                 <NoData/> }
                         </>
                     }
                 </Container>
                 <JournalModal 
-                    show={showNewJournal} 
-                    clickHandler={() => setShowNewJournal(false)}
+                    show={showJournalForm} 
+                    clickHandler={isEdit ? showEditJournalHandler : showNewJournalHandler}
                     accessToken={user.accessToken}
                     journals={journals}
                     setJournals={setJournals}
@@ -82,6 +105,9 @@ const JournalPage = () => {
                     shouldColorFilter={shouldColorFilter}
                     filterColor={currentColor}
                     isAscending={isAscending}
+                    currentJournal={currentJournal}
+                    isEdit={isEdit}
+                    setIsEdit={setIsEdit}
                 />
                 <SortModal 
                     show={showSort} 

@@ -39,43 +39,45 @@ const AudioPlayer = ({source, color}) => {
     const [volume, setVolume] = useState(1);
     const [prevVolume, setPrevVolume] = useState(1);        // use this for mute to go back to the inital volume before we muted.
 
-    const audioRef = useRef(new Audio(source));
+    const [audio, setAudio] = useState(new Audio(source));
     const timerRef = useRef();
 
-    audioRef.current.addEventListener('ended', () => {
-        audioRef.current.pause();
+    audio && audio.addEventListener('ended', () => {
+        audio.pause();
         setIsPlaying(false);
         setIsFinished(true);
     });
 
     useEffect(() => {
-        audioRef.current.addEventListener('loadedmetadata', e => {
-            setDuration(audioRef.current.duration);
-            setVolume(audioRef.current.volume);
-        });
-    }, []);
+        setAudio(new Audio(source));
+    }, [source]);
+
+    audio && audio.addEventListener('loadedmetadata', e => {
+        setDuration(audio.duration);
+        setVolume(audio.volume);
+    });
 
     useEffect(() => {
         if (isPlaying) {
             if (isFinished) setCurrentPlayTime(0);
             setIsFinished(false);
-            audioRef.current.play();
+            audio && audio.play();
             timerRef.current = setInterval(() => {
                 setCurrentPlayTime(currentPlayTime => currentPlayTime + 100);
             }, 100);
         } else {
-            audioRef.current.pause();
+            audio && audio.pause();
             clearInterval(timerRef.current);
         }
     }, [isPlaying]);
 
     useEffect(() => {
         if (isMuted) {
-            setPrevVolume(audioRef.current.volume);
-            audioRef.current.volume = 0;
+            setPrevVolume(audio.volume);
+            audio.volume = 0;
             setVolume(0);
         } else {
-            audioRef.current.volume = prevVolume;
+            audio.volume = prevVolume;
             setVolume(prevVolume);
         }
     }, [isMuted]);
@@ -86,16 +88,16 @@ const AudioPlayer = ({source, color}) => {
 
     const changeVolumeHandler = e => {
         setVolume(e.target.value/100);
-        audioRef.current.volume = e.target.value/100;
+        audio.volume = e.target.value/100;
     }
 
     const scrubPlayerHandler = e => {
         setIsPlaying(false);
-        if (audioRef.current.duration - e.target.value < 0.01) { // the interval is small enough that we can consider as a finished track.
+        if (audio.duration - e.target.value < 0.01) { // the interval is small enough that we can consider as a finished track.
             setIsFinished(true);
-            audioRef.current.currentTime = audioRef.current.duration;
+            audio.currentTime = audio.duration;
         } else {
-            audioRef.current.currentTime = e.target.value;
+            audio.currentTime = e.target.value;
             setIsFinished(false);
         }
         setCurrentPlayTime(e.target.value*1000);

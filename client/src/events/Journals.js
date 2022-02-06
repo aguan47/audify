@@ -1,7 +1,8 @@
+import { useCallback } from 'react';
 import axios, { createAuthorization, formDataHeader } from '../axios/axios';
 import { BLUE } from '../config/constants';
 
-const createJournalData = (title, caption, audioJournal, currentColor) => {
+export const createJournalData = (title, caption, audioJournal, currentColor) => {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('caption', caption);
@@ -20,19 +21,16 @@ const modifyJournalPath = (journals) => {
     });
 }
 
-const resetInputFields = (setTitle, setCaption, setAudioJournal, setCurrentColor, setMessageState) => {
+export const resetInputFields = (setTitle, setCaption, setAudioJournal, setCurrentColor) => {
     setTitle("");
     setCaption("");
     setAudioJournal({audio: null, source: ""});
     setCurrentColor(BLUE);
-    setMessageState({message: "Created new journal!", isError: false, showMessage: true});
 }
 
-export const createJournal = async (accessToken, e, title, setTitle, caption, setCaption, audioJournal, setAudioJournal, journals, setJournals, currentColor, setCurrentColor, messageState, setMessageState, setIsLoading, allJournalsRef, shouldColorFilter, filterColor, isAscending) => {
+export const createJournal = async (accessToken, e, journalData, journals, setJournals, messageState, setMessageState, allJournalsRef, shouldColorFilter, filterColor, isAscending) => {
     e.preventDefault();
-    const journalData = createJournalData(title, caption, audioJournal, currentColor);
     setMessageState({message: "", showMessage: false, isError: messageState.isError});
-    setIsLoading(true);
     try {
         const { data } = await axios.post("/journals/", journalData, formDataHeader(accessToken));
         const newJournal = createNewJournalEntryData(data.journal);
@@ -45,12 +43,26 @@ export const createJournal = async (accessToken, e, title, setTitle, caption, se
             }
         }
         allJournalsRef.current = [...allJournalsRef.current, newJournal];
-
-        resetInputFields(setTitle, setCaption, setAudioJournal, setCurrentColor, setMessageState);
+        setMessageState({message: "Created new journal!", isError: false, showMessage: true});
     } catch({response}) {
         setMessageState({message: response.data.message, isError: true, showMessage: true});
-    } finally {
-        setIsLoading(false);
+    }
+}
+
+export const editJournal = async(e, accessToken, journalID, journalData, messageState, setMessageState, allJournalsRef, journals, setJournals) => {
+    e.preventDefault();
+    setMessageState({message: "", showMessage: false, isError: messageState.isError});
+    try {
+        const { data } = await axios.put(`/journals/${journalID}`, journalData, formDataHeader(accessToken));
+        const updatedJournal = createNewJournalEntryData(data.journal);
+        const modifiedAllJournals = editJournalData(allJournalsRef.current, journalID, updatedJournal);
+        const modifiedOnScreenJournals = editJournalData(journals, journalID, updatedJournal);
+
+        allJournalsRef.current = modifiedAllJournals;
+        setJournals([...modifiedOnScreenJournals]);
+        setMessageState({message: "Edited journal!", isError: false, showMessage: true});
+    } catch({response}) {
+        setMessageState({message: response.data.message, isError: true, showMessage: true});
     }
 }
 
@@ -59,43 +71,14 @@ export const getJournals = async(accessToken, setJournals, setIsLoading, allJour
     try {
         const { data } = await axios.get("/journals/", createAuthorization(accessToken));
         let modifiedJournalPaths = modifyJournalPath(data.journals);
-        setJournals(modifiedJournalPaths);
-        allJournalsRef.current = modifiedJournalPaths;
+        let ascendingJournals = sortByDate(true, modifiedJournalPaths);
+        setJournals(ascendingJournals);
+        allJournalsRef.current = ascendingJournals;
     } catch({response}) {
         console.log(response.data.message);
     } finally {
         setIsLoading(false);
     }
-}
-
-const filterJournalColors = (color, journals) => {
-    return journals && journals.filter(journal => {
-        return journal.color === color
-    });
-}
-
-const filterJournalsByID = (journals, journalID) => {
-    return journals && journals.filter(journal => {
-        return journal.journal_id !== journalID
-    });
-}
-
-const ascendingOrder = (a,b) => {
-    return a.create_date < b.create_date
-}
-
-const descendingOrder = (a,b) => {
-    return a.create_date > b.create_date
-}
-
-const sortByDate = (isAscending, journals) => {
-    if (isAscending) return [...journals.sort(ascendingOrder)];
-    return [...journals.sort(descendingOrder)];
-}
-
-export const sortAndFilter = (shouldColorFilter, color, isAscending, journals, setJournals) => {
-    if (shouldColorFilter) journals = filterJournalColors(color, journals);
-    setJournals(sortByDate(isAscending, journals));
 }
 
 export const deleteJournal = async(accessToken, journalID, allJournals, journalsOnScreen, setJournals, setShowDeleteJournal) => {
@@ -112,4 +95,47 @@ export const deleteJournal = async(accessToken, journalID, allJournals, journals
     } catch({response}) {
         console.log(response);
     }
+}
+
+export const sortAndFilter = (shouldColorFilter, color, isAscending, journals, setJournals) => {
+    if (shouldColorFilter) journals = filterJournalColors(color, journals);
+    setJournals(sortByDate(isAscending, journals));
+}
+
+const filterJournalColors = (color, journals) => {
+    return journals && journals.filter(journal => {
+        return journal.color === color
+    });
+}
+
+const filterJournalsByID = (journals, journalID) => {
+    return journals && journals.filter(journal => {
+        return journal.journal_id !== journalID
+    });
+}
+
+const ascendingOrder = (a,b) => {
+    if (a.last_modified && !b.last_modified) return a.last_modified < b.create_date; 
+    if (!a.last_modified && b.last_modified) return a.create_date < b.last_modified;
+    if (a.last_modified && b.last_modified) return a.last_modified < b.last_modified;
+    return a.create_date < b.create_date;
+}
+
+const descendingOrder = (a,b) => {
+    if (a.last_modified && !b.last_modified) return a.last_modified > b.create_date; 
+    if (!a.last_modified && b.last_modified) return a.create_date > b.last_modified;
+    if (a.last_modified && b.last_modified) return a.last_modified > b.last_modified;
+    return a.create_date > b.create_date;
+}
+
+const sortByDate = (isAscending, journals) => {
+    if (isAscending) return [...journals.sort(ascendingOrder)];
+    return [...journals.sort(descendingOrder)];
+}
+
+const editJournalData = (journals, journalID, updatedJournal) => {
+    return journals && journals.map(journal => {
+        if (journal.journal_id === journalID) return updatedJournal;
+        return journal;
+    });
 }

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useReducer, useState } from "react";
+import { useCallback, useContext, useEffect, useReducer, useState } from "react";
 import Forms from "../../components/Forms/Forms";
 import { editProfileState, formReducer } from "../../reducer/formReducer";
 import UserContext from "../../context/UserContext";
@@ -70,11 +70,13 @@ const Profile = () => {
     }, [isEdit]);
     
     const editEventHandler = () => editBtnHandler(state, isEdit, setIsEdit, buttonState, setButtonState, setMessageState, messageState);
-    const submitHandler = async e => {
+    const submitHandler = useCallback(async e => {
         await editUserInformation(e, user, setUser, state, dispatch, messageState, setMessageState, initialInputState, setInitialInputState, setIsLoading, initialProfilePicture, setInitialProfilePicture, profilePicture);
-    } 
+    }, [user, state, messageState, initialInputState, initialProfilePicture, profilePicture]); 
     const changePictureHandler = e => loadPicture(e, setProfilePicture);
-    const deleteEventHandler = () => deleteUserProfile(user.accessToken, navigate, setUser);
+    const deleteEventHandler = useCallback(() => {
+        deleteUserProfile(user.accessToken, navigate, setUser)
+    }, [user.accessToken]);
     const escapeHandler = e => escapeToCloseModal(e, setShowDeleteModal);
 
     return (
