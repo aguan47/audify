@@ -1,6 +1,8 @@
 const { createNewJournalService, 
     getUserJournalsService, 
-    validateNewJournalReqService } = require("../../service/Journals");
+    validateNewJournalReqService, 
+    deleteAllUserJournalsService,
+    deleteOneJournalService} = require("../../service/Journals");
 
 
 const createJournal = async(req, res, next) => {
@@ -31,7 +33,8 @@ const getJournals = async(req, res, next) => {
 const deleteJournal = async(req, res, next) => {
     try {
         const { user_id } = res.locals.user;
-        const { journal_id } = req.body;
+        const { journalID } = req.params;
+        await deleteOneJournalService(user_id, journalID);
         return res.status(200).json({success: true, message: "Success"});
     } catch(err) {
         err.status = 400;

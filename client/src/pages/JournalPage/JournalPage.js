@@ -3,20 +3,22 @@ import Container from "../../components/Container/Container";
 import JournalModal from "../../components/JournalModal/JournalModal";
 import AuthNavBar from "../../components/NavBar/AuthNavBar";
 import NoData from "../../components/NoData/NoData";
-import { getJournals } from "../../events/Journals";
+import { deleteJournal, getJournals } from "../../events/Journals";
 import { escapeToCloseModal } from "../../events/Keys";
-import { BLUE_BUTTON, HOLLOW_BLUE_BUTTON } from "../../tailwind/tailwind";
+import { BLUE_BUTTON, HOLLOW_BLUE_BUTTON, HOLLOW_RED_BUTTON, RED_BUTTON } from "../../tailwind/tailwind";
 import UserContext from '../../context/UserContext';
 import JournalList from "../../components/JournalList/JournalList";
 import Loader from "../../components/Loader/Loader";
 import SortModal from "../../components/SortModal/SortModal";
 import { BLUE } from "../../config/constants";
+import ConfirmationModal from '../../components/ConfirmationModal/ConfirmationModal';
 
 const JournalPage = () => {
     document.title = `Your journals | Audify`;
     
     const [showNewJournal, setShowNewJournal] = useState(false);
     const [showSort, setShowSort] = useState(false);
+    const [showDeleteJournal, setShowDeleteJournal] = useState(false);
     const [journals, setJournals] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isAscending, setIsAscending] = useState(false);
@@ -38,8 +40,13 @@ const JournalPage = () => {
             escapeToCloseModal(e, setShowNewJournal);
         } else if (showSort) {
             escapeToCloseModal(e, setShowSort);
+        } else if (showDeleteJournal) {
+            escapeToCloseModal(e, setShowDeleteJournal);
         }
     }
+
+    const deleteJournalHandler = () => deleteJournal(user.accessToken, currentJournal, allJournalsRef, journals, setJournals, setShowDeleteJournal);
+    console.log(journals);
 
     return (
         <>
@@ -59,6 +66,7 @@ const JournalPage = () => {
                                     userJournals={journals}
                                     currentJournal={currentJournal}
                                     setCurrentJournal={setCurrentJournal}
+                                    setShowDeleteModal={() => setShowDeleteJournal(true)}
                                 /> : 
                                 <NoData/> }
                         </>
@@ -86,6 +94,16 @@ const JournalPage = () => {
                     setShouldColorFilter={setShouldColorFilter}
                     currentColor={currentColor}
                     setCurrentColor={setCurrentColor}
+                />
+                <ConfirmationModal
+                    show={showDeleteJournal}
+                    clickHandler={() => setShowDeleteJournal(false)}
+                    body={"Do you wish this journal? You can no longer retrieve deleted journals."}
+                    agreeBtnText={"Yes, delete this journal"}
+                    disagreeBtnStyle={HOLLOW_RED_BUTTON}
+                    agreeBtnStyle={RED_BUTTON}
+                    disagreeHandler={() => setShowDeleteJournal(false)}
+                    agreeHandler={deleteJournalHandler}
                 />
             </div>
         </>

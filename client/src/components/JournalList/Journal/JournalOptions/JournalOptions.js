@@ -1,12 +1,12 @@
-const JournalOptions = () => {
+const JournalOptions = ({deleteJournalHandler}) => {
     return (
         <div className="mx-2 p-3 flex gap-x-5">
             <button className="flex items-center">
-                <span class="material-icons">edit</span>
+                <span className="material-icons">edit</span>
                 Edit journal
             </button>
-            <button className="flex items-center">
-                <span class="material-icons">delete</span>
+            <button className="flex items-center" onClick={deleteJournalHandler}>
+                <span className="material-icons">delete</span>
                 Delete journal
             </button>
         </div>

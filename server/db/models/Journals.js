@@ -34,8 +34,21 @@ const deleteAllUserJournalsFromDB = async userID => {
     });
 }
 
+const deleteOneJournalFromDB = async (userID, journalID) => {
+    return await db('journals')
+    .where({
+        'user_id': userID,
+        'is_deleted': 0,
+        'journal_id': journalID
+    })
+    .update({
+        'is_deleted': 1
+    });
+}
+
 module.exports = {
     saveNewJournalToDB,
     getUserJournalsFromDB,
-    deleteAllUserJournalsFromDB
+    deleteAllUserJournalsFromDB,
+    deleteOneJournalFromDB
 };

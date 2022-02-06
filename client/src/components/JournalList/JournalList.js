@@ -1,6 +1,6 @@
 import Journal from "./Journal/Journal";
 
-const JournalList = ({userJournals, currentJournal, setCurrentJournal}) => {
+const JournalList = ({userJournals, currentJournal, setCurrentJournal, setShowDeleteModal}) => {
     const journals = userJournals && userJournals.map(journal => {
         return (
             <Journal 
@@ -12,6 +12,7 @@ const JournalList = ({userJournals, currentJournal, setCurrentJournal}) => {
                 color={journal.color} 
                 showOptions={journal.journal_id === currentJournal}
                 clickHandler={() => setCurrentJournal(journal.journal_id)}
+                setShowDeleteModal={setShowDeleteModal}
             />
         );
     });

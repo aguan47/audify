@@ -74,6 +74,12 @@ const filterJournalColors = (color, journals) => {
     });
 }
 
+const filterJournalsByID = (journals, journalID) => {
+    return journals && journals.filter(journal => {
+        return journal.journal_id !== journalID
+    });
+}
+
 const ascendingOrder = (a,b) => {
     return a.create_date < b.create_date
 }
@@ -90,4 +96,20 @@ const sortByDate = (isAscending, journals) => {
 export const sortAndFilter = (shouldColorFilter, color, isAscending, journals, setJournals) => {
     if (shouldColorFilter) journals = filterJournalColors(color, journals);
     setJournals(sortByDate(isAscending, journals));
+}
+
+export const deleteJournal = async(accessToken, journalID, allJournals, journalsOnScreen, setJournals, setShowDeleteJournal) => {
+    try {
+        await axios.delete(`/journals/${journalID}`, createAuthorization(accessToken));
+
+        // delete it from the allJournals
+        const filteredAllJournals = filterJournalsByID(allJournals.current, journalID);
+        const filteredOnScreenJournals = filterJournalsByID(journalsOnScreen, journalID);
+
+        allJournals.current = filteredAllJournals;
+        setJournals(filteredOnScreenJournals);
+        setShowDeleteJournal(false);
+    } catch({response}) {
+        console.log(response);
+    }
 }

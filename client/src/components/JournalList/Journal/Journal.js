@@ -6,7 +6,7 @@ import AudioPlayer from '../../AudioPlayer/AudioPlayer';
 import JournalOptions from './JournalOptions/JournalOptions';
 
 
-const Journal = ({title, caption, audioSource, createDate, color, showOptions, clickHandler}) => {
+const Journal = ({title, caption, audioSource, createDate, color, showOptions, clickHandler, setShowDeleteModal}) => {
     let style = null;
     switch(color) { 
         case BLUE:
@@ -34,7 +34,7 @@ const Journal = ({title, caption, audioSource, createDate, color, showOptions, c
                 <p>{caption}</p>
             </div>
             <AudioPlayer source={audioSource} color={color}/>
-            { showOptions && <JournalOptions/>}
+            { showOptions && <JournalOptions deleteJournalHandler={setShowDeleteModal}/>}
         </div>
     );
 } 
