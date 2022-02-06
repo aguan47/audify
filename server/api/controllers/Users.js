@@ -13,98 +13,109 @@ const { validateNewUserReqService,
     deleteUserProfileService} = require('../../service/Users.js');
 const { deleteAllUserJournalsService } = require('../../service/Journals.js');
 
-const register = async (req, res) => {
+const register = async (req, res, next) => {
     try {
         await validateNewUserReqService(req.body);
         const { user_id } = await securelySaveNewUserService(req.body);
         const tokens = issueTokensService({name: req.body.name, email: req.body.email, id: user_id});
         await saveTokenToRedisService(user_id, tokens.refreshToken);
-        res.status(201).json({ success: true, message: "Successfully registed user", name: req.body.name, tokens });
+        return res.status(201).json({ success: true, message: "Successfully registed user", name: req.body.name, tokens });
     } catch(err) {
-        res.status(406).json({ success: false, message: err.message });
+        err.status = 400;
+        next(err);
     }
 }
 
-const login = async(req, res) => {
+const login = async(req, res, next) => {
     try {
         await validateExistingUserReqService(req.body);
         const { email, name, user_id } = await logInUserService(req.body);
         const tokens = issueTokensService({name: name, email: email, id: user_id});
         await saveTokenToRedisService(user_id, tokens.refreshToken);
-        res.status(200).json({ success: true, message: "Successfully logged in", name: name, tokens });
+        return res.status(200).json({ success: true, message: "Successfully logged in", name: name, tokens });
     } catch(err) {
-        res.status(406).json({ success: false, message: err.message });
+        err.status = 400;
+        next(err);
     }
 }
 
-const validateAccessToken = (req, res) => {
+const validateAccessToken = (req, res, next) => {
     try {
-        res.status(200).json({success: true, message: 'Validated', user: res.locals.user});
+        return res.status(200).json({success: true, message: 'Validated', user: res.locals.user});
     } catch(err) {
-        res.status(403).json({success: false, message: err.message});
+        err.status = 401;
+        next(err);
     }
 }
 
-const logoutUser = async (req, res) => {
+const logoutUser = async (req, res, next) => {
     try {
         const { user_id } = res.locals.user;
         await deleteRefreshTokensFromRedisService(`${user_id}-refresh-token`);
-        res.status(200).json({success: true, message: "Logged out"});
+        return res.status(200).json({success: true, message: "Logged out"});
     } catch(err) {
-        res.status(403).json({success: false, message: err.message});
+        err.status = 401;
+        next(err);
     }
 }
 
-const getUser = async (req, res) => {
+const getUser = async (req, res, next) => {
     try {
         const { user_id } = res.locals.user;
         const user = await getUserDataService(user_id);
-        res.status(200).json({success: true, message: "Success", user});
+        return res.status(200).json({success: true, message: "Success", user});
     } catch (err) {
-        res.status(403).json({success: false, message: err.message});
+        err.status = 400;
+        next(err);
     }
 }
 
-const getUserAvatar = async(req, res) => {
+const getUserAvatar = async(req, res, next) => {
     try {
         const { user_id } = res.locals.user;
         const user = await getUserProfilePictureService(user_id);
-        res.status(200).json({success: true, message: "Success", user});
+        return res.status(200).json({success: true, message: "Success", user});
     } catch (err) {
-        res.status(403).json({success: false, message: err.message});
+        err.status = 400;
+        next(err);
     }
 }
 
-const editUser = async (req, res) => {
+const editUser = async (req, res, next) => {
     try {
         const { user_id } = res.locals.user;
         await validateEditUserReqService(req.body);
         await editUserDataService(user_id, req.body);
-        res.status(200).json({success: true, message: "Success"});
+        return res.status(200).json({success: true, message: "Success"});
     } catch(err) {
-        res.status(403).json({success: false, message: err.message});
+        err.status = 400;
+        next(err);
     }
 }
 
-const editProfilePicture = async(req, res) => {
+const editProfilePicture = async(req, res, next) => {
     try {
         const { user_id } = res.locals.user;
+        if (!req?.file?.filename) throw new Error('There is no file uploaded.')
+
         await editUserProfilePictureService(user_id, req?.file?.filename);
-        res.status(200).json({success: true, message: "Success"});
+        return res.status(200).json({success: true, message: "Success"});
     } catch(err) {
-        res.status(403).json({success: false, message: err.message});
+        err.status = 400;
+        next(err);
     }
 }
 
-const deleteProfile = async (req, res) => {
+const deleteProfile = async (req, res, next) => {
     try {
         const { user_id } = res.locals.user;
         await deleteUserProfileService(user_id);
         await deleteAllUserJournalsService(user_id);
         await deleteRefreshTokensFromRedisService(`${user_id}-refresh-token`);
-        res.status(200).json({success: true, message: "Success"});
+        return res.status(200).json({success: true, message: "Success"});
     } catch(err) {  
-        res.status(400).json({success: false, message: err.message});
+        err.status = 400;
+        next(err);
     }
 }
 

@@ -1,15 +1,18 @@
 import Journal from "./Journal/Journal";
 
-const JournalList = ({userJournals}) => {
+const JournalList = ({userJournals, currentJournal, setCurrentJournal}) => {
     const journals = userJournals && userJournals.map(journal => {
         return (
             <Journal 
-            key={journal.journal_id} 
-            title={journal.title} 
-            caption={journal.caption} 
-            audioSource={journal.journal_path}
-            createDate={journal.create_date}
-            color={journal.color} />
+                key={journal.journal_id} 
+                title={journal.title} 
+                caption={journal.caption} 
+                audioSource={journal.journal_path}
+                createDate={journal.create_date}
+                color={journal.color} 
+                showOptions={journal.journal_id === currentJournal}
+                clickHandler={() => setCurrentJournal(journal.journal_id)}
+            />
         );
     });
 

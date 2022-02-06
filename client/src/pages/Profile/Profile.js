@@ -97,7 +97,7 @@ const Profile = () => {
                 <ConfirmationModal 
                     show={showDeleteModal} 
                     clickHandler={() => setShowDeleteModal(false)} 
-                    body={"Are you sure you want to to delete your account? You will lose all your journals."}
+                    body={"Are you sure you want to to delete your account? You will lose all of your journals."}
                     disagreeBtnStyle={HOLLOW_RED_BUTTON}
                     agreeBtnStyle={RED_BUTTON}
                     agreeBtnText={"Yes, delete my account"}

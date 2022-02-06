@@ -3,6 +3,8 @@ const express = require('express');
 const cors = require('cors');
 const compression = require('compression');
 const app = express();
+const { errorHandler } = require('./middleware/ErrorHandling.js');
+
 
 // Import all of the routes specified in the routes folder
 const userRoutes = require('./api/routes/Users.js');
@@ -17,6 +19,9 @@ app.use(compression());
 // Use all of the routes specified
 app.use('/users', userRoutes);
 app.use('/journals', journalRoutes);
+
+// Error Handling goes here.
+app.use(errorHandler);
 
 // Serve static images and audios
 app.use('/images', express.static(__dirname + '/images'))

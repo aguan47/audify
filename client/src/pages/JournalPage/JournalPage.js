@@ -22,6 +22,7 @@ const JournalPage = () => {
     const [isAscending, setIsAscending] = useState(false);
     const [shouldColorFilter, setShouldColorFilter] = useState(false);
     const [currentColor, setCurrentColor] = useState(BLUE);
+    const [currentJournal, setCurrentJournal] = useState(null);
     const { user } = useContext(UserContext);
 
     const allJournalsRef = useRef(null);
@@ -53,7 +54,13 @@ const JournalPage = () => {
                     {
                         !isLoading && 
                         <>
-                            {  journals?.length ? <JournalList userJournals={journals}/> : <NoData/> }
+                            {  journals?.length ? 
+                                <JournalList 
+                                    userJournals={journals}
+                                    currentJournal={currentJournal}
+                                    setCurrentJournal={setCurrentJournal}
+                                /> : 
+                                <NoData/> }
                         </>
                     }
                 </Container>
