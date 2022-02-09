@@ -36,10 +36,9 @@ const Registration = () => {
 
     return (
         <Container>
-
             <div className="flex justify-center items-center">
                 <div className="bg-blue-1 h-screen w-3/5"> 
-                    <span class="material-icons text-white m-5 cursor-pointer hover:bg-secondary-btn p-1 rounded-full" onClick={() => navigate(-1)}>arrow_back</span>
+                    <span className="material-icons text-white m-5 cursor-pointer hover:bg-secondary-btn p-1 rounded-full" onClick={() => navigate(-1)}>arrow_back</span>
                 </div>
                 <div className="w-full flex flex-col items-center">
                     <h1 className="text-blue-1 font-bold text-center text-xl my-3">Register now</h1>
@@ -52,7 +51,6 @@ const Registration = () => {
                             <p className="text-gray-400 text-center text-sm">{"Already have an account? "}<Link to="/log-in" className="text-blue-1">Log in here</Link> </p>
                         </>
                     }
-                
                 </div> 
             </div>
         </Container>

@@ -19,7 +19,7 @@ const Forms = ({fields, submitText, dispatch, submit, canSubmit}) => {
     return (
         <form className="flex flex-col m-auto px-10 py-5 w-full">
             {inputs}
-            { canSubmit && <input type="submit" value={submitText} onClick={submit} className={BIG_BLUE_BUTTON}/> }
+            { canSubmit && <input type="submit" value={submitText} onClick={submit} className={BIG_BLUE_BUTTON} name="submit"/> }
         </form>
     );
 }
