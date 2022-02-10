@@ -57,7 +57,9 @@ const Journal = ({title, caption, audioSource, createDate, lastModified, color,
             <AudioPlayer source={audioSource} color={color}/>
             { showOptions && <JournalOptions 
                             deleteJournalHandler={deleteHandler} 
-                            editJournalHandler={editHandler}/>}
+                            editJournalHandler={editHandler}
+                            journalLink={audioSource}
+                            />}
         </motion.div>
     );
 } 

@@ -115,17 +115,17 @@ const filterJournalsByID = (journals, journalID) => {
 }
 
 const ascendingOrder = (a,b) => {
-    if (a.last_modified && !b.last_modified) return a.last_modified < b.create_date; 
-    if (!a.last_modified && b.last_modified) return a.create_date < b.last_modified;
-    if (a.last_modified && b.last_modified) return a.last_modified < b.last_modified;
-    return a.create_date < b.create_date;
+    if (a.last_modified && !b.last_modified) return a.last_modified < b.create_date ? 1 : -1; 
+    if (!a.last_modified && b.last_modified) return a.create_date < b.last_modified ? 1 : -1;
+    if (a.last_modified && b.last_modified) return a.last_modified < b.last_modified ? 1 : -1;
+    return a.create_date < b.create_date ? 1 : -1;
 }
 
 const descendingOrder = (a,b) => {
-    if (a.last_modified && !b.last_modified) return a.last_modified > b.create_date; 
-    if (!a.last_modified && b.last_modified) return a.create_date > b.last_modified;
-    if (a.last_modified && b.last_modified) return a.last_modified > b.last_modified;
-    return a.create_date > b.create_date;
+    if (a.last_modified && !b.last_modified) return a.last_modified > b.create_date ? 1 : -1; 
+    if (!a.last_modified && b.last_modified) return a.create_date > b.last_modified ? 1 : -1; 
+    if (a.last_modified && b.last_modified) return a.last_modified > b.last_modified ? 1 : -1; 
+    return a.create_date > b.create_date ? 1 : -1; 
 }
 
 const sortByDate = (isAscending, journals) => {
