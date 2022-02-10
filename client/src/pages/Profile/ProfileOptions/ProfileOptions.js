@@ -6,7 +6,7 @@ const ProfileOptions = ({buttonState, editEventHandler, deleteEventHandler}) => 
             <button className={buttonState.buttonClass} onClick={editEventHandler}>{buttonState.buttonText}</button> 
             <button className={RED_BUTTON} onClick={deleteEventHandler}>Delete your account</button>
         </div>
-    )
+    );
 }
 
 export default ProfileOptions;
