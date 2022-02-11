@@ -1,16 +1,11 @@
-import { useEffect, useState } from "react";
 import Modal from "../Modal/Modal";
 import { BLUE_BUTTON, OFF_BUTTON, BIG_BLUE_BUTTON } from '../../tailwind/tailwind';
 import ColorBar from '../ColorBar/ColorBar';
-import { BLUE } from '../../config/constants';
 import { sortAndFilter } from "../../events/Journals";
 
-const SortModal = ({show, clickHandler, journals, setJournals, isAscending, setIsAscending, shouldColorFilter, setShouldColorFilter, currentColor, setCurrentColor}) => {
-
-
-    // useEffect(() => {
-    //     setIsAscending(isAscending);
-    // }, [isAscending]);
+const SortModal = ({show, clickHandler, journals, setJournals, 
+        isAscending, setIsAscending, shouldColorFilter, 
+        setShouldColorFilter, currentColor, setCurrentColor}) => {
 
     const sortAndFilterHandler = () => sortAndFilter(shouldColorFilter, currentColor, isAscending, journals, setJournals);
 
