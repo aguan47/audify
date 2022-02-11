@@ -65,7 +65,7 @@ const JournalModal = ({ show, clickHandler, accessToken, journals, setJournals,
         const journalData = createJournalData(title, caption, audioJournal, currentColor);
         setIsLoading(true);
         editJournal(e, accessToken, currentJournal.journal_id, journalData, messageState, 
-            setMessageState, allJournalsRef, journals, setJournals);
+            setMessageState, allJournalsRef, journals, setJournals, isAscending);
         if (!messageState.isError) resetInputFields(setTitle, setCaption, setAudioJournal, setCurrentColor);
         
         setIsLoading(false);

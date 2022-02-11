@@ -49,7 +49,7 @@ export const createJournal = async (accessToken, e, journalData, journals, setJo
     }
 }
 
-export const editJournal = async(e, accessToken, journalID, journalData, messageState, setMessageState, allJournalsRef, journals, setJournals) => {
+export const editJournal = async(e, accessToken, journalID, journalData, messageState, setMessageState, allJournalsRef, journals, setJournals, isAscending) => {
     e.preventDefault();
     setMessageState({message: "", showMessage: false, isError: messageState.isError});
     try {
@@ -58,8 +58,12 @@ export const editJournal = async(e, accessToken, journalID, journalData, message
         const modifiedAllJournals = editJournalData(allJournalsRef.current, journalID, updatedJournal);
         const modifiedOnScreenJournals = editJournalData(journals, journalID, updatedJournal);
 
-        allJournalsRef.current = modifiedAllJournals;
-        setJournals([...modifiedOnScreenJournals]);
+        const sortedAllJournals = sortByDate(isAscending, modifiedAllJournals);
+        const sortedOnScreenJournals = sortByDate(isAscending, modifiedOnScreenJournals);
+
+
+        allJournalsRef.current = sortedAllJournals;
+        setJournals([...sortedOnScreenJournals]);
         setMessageState({message: "Edited journal!", isError: false, showMessage: true});
     } catch({response}) {
         setMessageState({message: response.data.message, isError: true, showMessage: true});
