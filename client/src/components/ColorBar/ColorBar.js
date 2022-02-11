@@ -13,7 +13,7 @@ const ColorBar = ({currentColor, setCurrentColor}) => {
         let style = colorList[color].style;
         colorList[color].selected = currentColor === color;
         if (colorList[color].selected) style += " " + SELECTED_CIRCLE;
-        return <span key={color} className={style} onClick={e => setCurrentColor(color)}></span>;
+        return <span key={color} className={style} onClick={e => setCurrentColor(color)}>{color}</span>;
     });
 
     return (
