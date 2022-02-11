@@ -32,14 +32,6 @@ describe("ProfileOptions: Edit button text", () => {
         fireEvent.click(editButton);
         expect(mockEditEventHandler).toBeCalled();
     });
-
-    it("shows 'dont save changes' once clicked", () => {
-        mockButtonState.buttonText = "Don't save changes";
-        render(<MockProfileOptions mockButtonState={mockButtonState}/>);
-        let editButton = screen.getByText(mockButtonState.buttonText);
-        fireEvent.click(editButton);
-        expect(editButton).toBeInTheDocument();
-    });
 });
 
 describe("ProfileOptions: Delete button text", () => {
