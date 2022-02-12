@@ -37,6 +37,7 @@ const Journal = ({title, caption, audioSource, createDate, lastModified, color,
 
     return (
         <motion.div 
+            data-testid={"journal"}
             className={style} 
             onClick={clickHandler} 
             variants={journalVariants} 

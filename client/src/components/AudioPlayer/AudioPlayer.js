@@ -5,7 +5,6 @@ import { RED, GREEN, YELLOW } from "../../config/constants";
 import { BLUE_PLAYER, RED_PLAYER, GREEN_PLAYER, YELLOW_PLAYER } from "../../tailwind/tailwind";
 
 const AudioPlayer = ({source, color}) => {
-    console.log(source);
     let style = null;
     let rangeStyles = [rangeStyle.VolumeSlider];
 
