@@ -35,11 +35,6 @@ const Journal = ({title, caption, audioSource, createDate, lastModified, color,
             break;
     }
 
-    let dateText = `${moment(GMTToLocal(createDate)).fromNow()}`;
-    if (lastModified) {
-        dateText += ` last modified ${moment(lastModified).fromNow()}`
-    }
-
     return (
         <motion.div 
             className={style} 
@@ -50,7 +45,10 @@ const Journal = ({title, caption, audioSource, createDate, lastModified, color,
             <div className='mx-5 p-1'>
                 <div className="flex justify-between">
                     <h1 className="text-2xl font-bold">{title}</h1>
-                    <p className='my-2'>{dateText}</p>
+                    {
+                        lastModified ? <p>{moment(GMTToLocal(createDate)).fromNow()}&nbsp;&nbsp;<sup>last modified {moment(lastModified).fromNow()}</sup></p>
+                        :  <p>{moment(GMTToLocal(createDate)).fromNow()}</p>
+                    }
                 </div>
                 <p>{caption}</p>
             </div>

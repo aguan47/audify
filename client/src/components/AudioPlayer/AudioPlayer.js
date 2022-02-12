@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import rangeStyle from './AudioPlayer.module.css';
 import { msToHumanTime } from "../../utlities/helper";
-import { RED, GREEN, YELLOW, BLUE } from "../../config/constants";
-import { BLUE_PLAYER, RED_PLAYER, GREEN_PLAYER, YELLOW_PLAYER, SMALL_PLAYER } from "../../tailwind/tailwind";
+import { RED, GREEN, YELLOW } from "../../config/constants";
+import { BLUE_PLAYER, RED_PLAYER, GREEN_PLAYER, YELLOW_PLAYER } from "../../tailwind/tailwind";
 
 const AudioPlayer = ({source, color}) => {
     let style = null;
@@ -21,12 +21,8 @@ const AudioPlayer = ({source, color}) => {
             style = GREEN_PLAYER;
             rangeStyles.push(rangeStyle.GreenPlayer);
             break;
-        case BLUE:
-            style = BLUE_PLAYER;
-            rangeStyles.push(rangeStyle.BluePlayer);
-            break;
         default:
-            style = SMALL_PLAYER;
+            style = BLUE_PLAYER;
             rangeStyles.push(rangeStyle.BluePlayer);
             break;
     }
