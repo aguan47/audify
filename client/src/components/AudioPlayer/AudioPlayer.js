@@ -5,6 +5,7 @@ import { RED, GREEN, YELLOW } from "../../config/constants";
 import { BLUE_PLAYER, RED_PLAYER, GREEN_PLAYER, YELLOW_PLAYER } from "../../tailwind/tailwind";
 
 const AudioPlayer = ({source, color}) => {
+    console.log(source);
     let style = null;
     let rangeStyles = [rangeStyle.VolumeSlider];
 
@@ -108,6 +109,7 @@ const AudioPlayer = ({source, color}) => {
                 <input 
                     type="range" 
                     className={rangeStyles.join(" ")} 
+                    data-testid={"playback-bar"}
                     max={duration} 
                     value={currentPlayTime/1000}
                     min={0}
@@ -122,6 +124,7 @@ const AudioPlayer = ({source, color}) => {
                 </button>
                 <input 
                     type="range"
+                    data-testid={"volume-bar"}
                     className={rangeStyles.join(" ")} 
                     max={100} 
                     value={volume*100} 
