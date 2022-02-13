@@ -4,7 +4,7 @@ import { msToHumanTime } from '../../utlities/helper';
 
 let mediaRecorder = null;
 let audioChunks = [];
-const Recorder = ({setAudioJournal, audioRef, shouldOutput}) => {
+const Recorder = ({setAudioJournal, shouldOutput}) => {
 
     const [recording, setRecording] = useState(false);
     const [time, setTime] = useState(0);

@@ -38,6 +38,7 @@ const Toast = ({message, show, isError }) => {
                     initial="initial"
                     animate="animate"
                     exit="exit"
+                    data-testid={"toast"}
                 >
                     <h1></h1>
                     <h1>{message}</h1> 
