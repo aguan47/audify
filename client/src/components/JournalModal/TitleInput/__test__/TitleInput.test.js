@@ -17,12 +17,12 @@ describe("TitleInput: Check if input, title and counter is rendered", () => {
 
     it("should render the corrrect counter if empty", () => {
         render(<MockTitleInput title={""}/>);
-        expect(screen.getByText("000")).toBeInTheDocument();
+        expect(screen.getByText("050")).toBeInTheDocument();
     });
 
     it("should render the correct counter if non-empty", () => {
         render(<MockTitleInput title={"Hello World"}/>);
-        expect(screen.getByText("011")).toBeInTheDocument();
+        expect(screen.getByText("039")).toBeInTheDocument();
     });
 
     it("should render the correct title", () => {

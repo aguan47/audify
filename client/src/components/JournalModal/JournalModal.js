@@ -51,6 +51,16 @@ const JournalModal = ({ show, clickHandler, accessToken, journals, setJournals,
         setIsLoading(false);
     }, [isEdit]);
 
+    const titleHandler = e => {
+        if(e.target.value.length > 50) return;
+        setTitle(e.target.value);
+    }
+
+    const captionHandler = e => {
+        if(e.target.value.length > 150) return;
+        setCaption(e.target.value);
+    }
+
     const createJournalHandler = useCallback(e => {
         const journalData = createJournalData(title, caption, audioJournal, currentColor);
         setIsLoading(true);
@@ -79,8 +89,8 @@ const JournalModal = ({ show, clickHandler, accessToken, journals, setJournals,
                 {
                     isLoading ? <Loader /> :
                     <>
-                        <TitleInput title={title} titleHandler={e => setTitle(e.target.value)}/>
-                        <CaptionInput caption={caption} captionHandler={e => setCaption(e.target.value)} />
+                        <TitleInput title={title} titleHandler={titleHandler}/>
+                        <CaptionInput caption={caption} captionHandler={captionHandler} />
                         <ColorBar currentColor={currentColor} setCurrentColor={setCurrentColor}/>
                         { audioJournal.source && <AudioPlayer source={audioJournal.source}/> }
                         <Recorder 

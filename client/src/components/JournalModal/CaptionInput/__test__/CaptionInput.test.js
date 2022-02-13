@@ -17,12 +17,12 @@ describe("CaptionInput: Check if input, caption and counter is rendered", () => 
 
     it("should render the corrrect counter if empty", () => {
         render(<MockTitleInput caption={""}/>);
-        expect(screen.getByText("000")).toBeInTheDocument();
+        expect(screen.getByText("150")).toBeInTheDocument();
     });
 
     it("should render the correct counter if non-empty", () => {
         render(<MockTitleInput caption={"Hello World"}/>);
-        expect(screen.getByText("011")).toBeInTheDocument();
+        expect(screen.getByText("139")).toBeInTheDocument();
     });
 
     it("should render the correct caption", () => {
