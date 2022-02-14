@@ -4,7 +4,7 @@ import Modal from "../Modal/Modal";
 import Recorder from "../Recorder/Recorder";
 import { createJournal, createJournalData, editJournal, resetInputFields } from "../../events/Journals";
 import ColorBar from "../ColorBar/ColorBar";
-import { BLUE } from '../../config/constants';
+import { BLUE, MAX_CAPTION_LENGTH, MAX_TITLE_LENGTH } from '../../config/constants';
 import AudioPlayer from "../AudioPlayer/AudioPlayer";
 import Toast from "../Toast/Toast";
 import Loader from '../Loader/Loader';
@@ -52,12 +52,12 @@ const JournalModal = ({ show, clickHandler, accessToken, journals, setJournals,
     }, [isEdit]);
 
     const titleHandler = e => {
-        if(e.target.value.length > 50) return;
+        if(e.target.value.length > MAX_TITLE_LENGTH) return;
         setTitle(e.target.value);
     }
 
     const captionHandler = e => {
-        if(e.target.value.length > 150) return;
+        if(e.target.value.length > MAX_CAPTION_LENGTH) return;
         setCaption(e.target.value);
     }
 

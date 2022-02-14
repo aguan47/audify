@@ -4,3 +4,5 @@ export const RED = "RED";
 export const BLUE = "BLUE";
 export const GREEN = "GREEN";
 export const YELLOW = "YELLOW";
+export const MAX_TITLE_LENGTH = 50;
+export const MAX_CAPTION_LENGTH = 150;

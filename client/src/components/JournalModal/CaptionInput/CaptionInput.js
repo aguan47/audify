@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { MAX_CAPTION_LENGTH } from "../../../config/constants";
 
 const textAreaVariants = {
     focus: {
@@ -15,7 +16,7 @@ const CaptionInput = ({caption, captionHandler}) => {
                 whileFocus="focus"
                 exit="exit"
                 onChange={captionHandler} value={caption} name="title" placeholder="Enter journal caption" className="pt-1 pr-10 pb-1 pl-1 m-1 w-full rounded resize-none border-2 border-grey-200 focus:border-blue-1 focus:outline-none"/>
-            <h1 className="absolute left-[92%] top-[10%] text-sm text-gray-400">{(150 - caption.length).toString().padStart(3,0)}</h1>
+            <h1 className="absolute left-[92%] top-[10%] text-sm text-gray-400">{(MAX_CAPTION_LENGTH - caption.length).toString().padStart(3,0)}</h1>
         </div>
     );
 }
