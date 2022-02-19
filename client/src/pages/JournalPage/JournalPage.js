@@ -31,7 +31,9 @@ const JournalPage = () => {
     const allJournalsRef = useRef(null);
 
     useEffect(() => {
-        getJournals(user.accessToken, setJournals, setIsLoading, allJournalsRef);
+        let isMounted = true;
+        if (isMounted) getJournals(user.accessToken, setJournals, setIsLoading, allJournalsRef);
+        return () => isMounted = false;
     }, []);
 
     const escapeHandler = useCallback(e => {
