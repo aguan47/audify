@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, memo } from "react";
 import rangeStyle from './AudioPlayer.module.css';
 import { msToHumanTime } from "../../utlities/helper";
 import { RED, GREEN, YELLOW } from "../../config/constants";
@@ -135,4 +135,4 @@ const AudioPlayer = ({source, color}) => {
     );
 }
 
-export default AudioPlayer;
+export default memo(AudioPlayer);

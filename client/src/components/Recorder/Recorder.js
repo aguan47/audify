@@ -9,7 +9,6 @@ const Recorder = ({setAudioJournal, shouldOutput}) => {
     const [recording, setRecording] = useState(false);
     const [time, setTime] = useState(0);
 
-
     useEffect(() => {
         if (!recording) return;
         

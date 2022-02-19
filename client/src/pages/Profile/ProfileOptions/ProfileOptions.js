@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { RED_BUTTON } from "../../../tailwind/tailwind";
 
 const ProfileOptions = ({buttonState, editEventHandler, deleteEventHandler}) => {
@@ -9,4 +10,8 @@ const ProfileOptions = ({buttonState, editEventHandler, deleteEventHandler}) => 
     );
 }
 
-export default ProfileOptions;
+
+const compareProps = (prev, current) => {
+    return prev.buttonState.buttonText === current.buttonState.buttonText;
+}
+export default memo(ProfileOptions, compareProps);

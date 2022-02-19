@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import Modal from '../../components/Modal/Modal';
 
 const ConfirmationModal = ({show, clickHandler, 
@@ -5,6 +6,7 @@ const ConfirmationModal = ({show, clickHandler,
         disagreeBtnText, agreeBtnText,
         disagreeBtnStyle, agreeBtnStyle,
         disagreeHandler, agreeHandler }) => {
+
     return (
         <Modal show={show} clickHandler={clickHandler} title={title}>
             <p className='mx-2 font-bold text-gray-500'>{body}</p>
@@ -16,4 +18,8 @@ const ConfirmationModal = ({show, clickHandler,
     ); 
 }
 
-export default ConfirmationModal;
+const compareProps = (prev, current) => {
+    return prev.show === current.show;
+}
+
+export default memo(ConfirmationModal, compareProps);

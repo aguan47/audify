@@ -1,4 +1,6 @@
+import { memo } from 'react';
 import Journal from "./Journal/Journal";
+
 
 const JournalList = ({userJournals, currentJournal, setCurrentJournal, setShowDeleteModal, setEditJournalModal}) => {
     const journals = userJournals && userJournals.map(journal => {
@@ -26,4 +28,4 @@ const JournalList = ({userJournals, currentJournal, setCurrentJournal, setShowDe
     );
 }
 
-export default JournalList;
+export default memo(JournalList);

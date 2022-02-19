@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import Modal from "../Modal/Modal";
 import { BLUE_BUTTON, OFF_BUTTON, BIG_BLUE_BUTTON } from '../../tailwind/tailwind';
 import ColorBar from '../ColorBar/ColorBar';
@@ -47,4 +48,11 @@ const SortModal = ({show, clickHandler, journals, setJournals,
     );
 }
 
-export default SortModal;
+const compareProps = (prev, current) => {
+    return prev.show === current.show &&
+        prev.isAscending === current.isAscending &&
+        prev.shouldColorFilter === current.shouldColorFilter &&
+        prev.currentColor === current.currentColor;
+}
+
+export default memo(SortModal, compareProps);

@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 const JournalOptions = ({deleteJournalHandler, editJournalHandler, journalLink}) => {
     return (
         <div className="mx-2 p-3 flex gap-x-5">
@@ -19,4 +21,4 @@ const JournalOptions = ({deleteJournalHandler, editJournalHandler, journalLink})
     );
 }
 
-export default JournalOptions;
+export default memo(JournalOptions);

@@ -31,9 +31,7 @@ const JournalPage = () => {
     const allJournalsRef = useRef(null);
 
     useEffect(() => {
-        setTimeout(() => {
-            getJournals(user.accessToken, setJournals, setIsLoading, allJournalsRef);
-        }, 500);
+        getJournals(user.accessToken, setJournals, setIsLoading, allJournalsRef);
     }, []);
 
     const escapeHandler = useCallback(e => {
@@ -67,8 +65,6 @@ const JournalPage = () => {
         setIsEdit(false);
         setCurrentJournal(null);
     }
-
-    console.log(journals);
 
     return (
         <>

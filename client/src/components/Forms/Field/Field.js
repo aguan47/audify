@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { INPUT, LABEL } from "../../../tailwind/tailwind";
 
 const Field = (props) => {
@@ -9,4 +10,4 @@ const Field = (props) => {
     );
 } 
 
-export default Field;
+export default memo(Field);

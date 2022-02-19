@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import { BIG_BLUE_BUTTON } from "../../tailwind/tailwind";
 import Modal from "../Modal/Modal";
 import Recorder from "../Recorder/Recorder";
@@ -10,8 +10,6 @@ import Toast from "../Toast/Toast";
 import Loader from '../Loader/Loader';
 import TitleInput from "./TitleInput/TitleInput";
 import CaptionInput from "./CaptionInput/CaptionInput";
-
-
 
 const JournalModal = ({ show, clickHandler, accessToken, journals, setJournals, 
     allJournalsRef, shouldColorFilter, filterColor, isAscending, isEdit, setIsEdit,
@@ -31,8 +29,10 @@ const JournalModal = ({ show, clickHandler, accessToken, journals, setJournals,
     const [modalTitle, setModalTitle] = useState("Create a new journal");
     
     useEffect(() => {
-        if (show) return;
         setMessageState({ message: "", showMessage: false, isError: false });
+        
+        if (show) return;
+        
         setTitle("");
         setAudioJournal({audio: null, source: ""});
         setCaption("");
@@ -113,4 +113,8 @@ const JournalModal = ({ show, clickHandler, accessToken, journals, setJournals,
     );
 }
 
-export default JournalModal;
+const compareProps = (prev, current) => {
+    return prev.show === current.show;
+}
+
+export default memo(JournalModal, compareProps);

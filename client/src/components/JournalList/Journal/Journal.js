@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import moment from 'moment';
 import { BLUE, GREEN, RED } from '../../../config/constants';
 import { BLUE_JOURNAL, GREEN_JOURNAL, RED_JOURNAL, YELLOW_JOURNAL } from '../../../tailwind/tailwind';
@@ -18,7 +19,7 @@ const journalVariants = {
 
 const Journal = ({title, caption, audioSource, createDate, lastModified, color, 
     showOptions, clickHandler, deleteHandler, editHandler}) => {
-    
+
     let style = null;
     switch(color) { 
         case BLUE:
@@ -63,4 +64,14 @@ const Journal = ({title, caption, audioSource, createDate, lastModified, color,
     );
 } 
 
-export default Journal;
+const compareProps = (prevProps, currentProps) => {
+    return prevProps.title === currentProps.title &&
+        prevProps.caption === currentProps.caption &&
+        prevProps.audioSource === currentProps.audioSource &&
+        prevProps.createDate === currentProps.createDate &&
+        prevProps.lastModified === currentProps.lastModified &&
+        prevProps.color === currentProps.color &&
+        prevProps.showOptions === currentProps.showOptions
+}
+
+export default memo(Journal, compareProps);

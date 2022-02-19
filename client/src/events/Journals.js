@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import axios, { createAuthorization, formDataHeader } from '../axios/axios';
 import { BLUE } from '../config/constants';
 

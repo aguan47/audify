@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { RED_LINK } from "../../tailwind/tailwind";
 import NavBar from "./NavBar";
 
@@ -8,10 +9,9 @@ const homePaths = [
 ];
 
 const AuthNavBar = () => {
-
     return (
         <NavBar paths={homePaths}/>
     );
 }
 
-export default AuthNavBar;
+export default memo(AuthNavBar);

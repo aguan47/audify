@@ -8,7 +8,7 @@ const colorList = {
 }
 
 const ColorBar = ({currentColor, setCurrentColor}) => {
-
+    
     let colors = Object.keys(colorList).map(color => {
         let style = colorList[color].style;
         colorList[color].selected = currentColor === color;

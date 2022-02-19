@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 
 const Banner = ({ message, show, isError }) => {
 
@@ -24,4 +24,4 @@ const Banner = ({ message, show, isError }) => {
     );
 }
 
-export default Banner;
+export default memo(Banner);

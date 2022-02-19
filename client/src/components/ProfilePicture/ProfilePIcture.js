@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import FileUpload from "../FileUpload/FileUpload";
 
 const ProfilePicture = ({profilePicture, changePictureHandler, isEdit}) => {
@@ -9,4 +10,9 @@ const ProfilePicture = ({profilePicture, changePictureHandler, isEdit}) => {
     );
 }
 
-export default ProfilePicture;
+const compareProps = (prev, current) => {
+    return prev.profilePicture === current.profilePicture &&
+        prev.isEdit === current.isEdit;
+}
+
+export default memo(ProfilePicture, compareProps);

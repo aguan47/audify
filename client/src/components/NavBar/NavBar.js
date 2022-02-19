@@ -1,12 +1,11 @@
-import { useContext } from "react";
+import { useContext, memo } from "react";
 import { useLocation } from "react-router";
 import UserContext from "../../context/UserContext";
 import NavLink from "./NavLink/NavLink";
 
-const NavBar = props => {
-
+const NavBar = ({paths}) => {
     let location = useLocation();
-    let navLinks = props.paths && props.paths.map(path => <NavLink key={path.name} pathName={path.name} path={path.path} current={location.pathname === path.path} design={path.btnDesign} />);
+    let navLinks = paths && paths.map(path => <NavLink key={path.name} pathName={path.name} path={path.path} current={location.pathname === path.path} design={path.btnDesign} />);
     const {user} = useContext(UserContext);
 
     return (
@@ -18,4 +17,4 @@ const NavBar = props => {
     );
 }
 
-export default NavBar;
+export default memo(NavBar);

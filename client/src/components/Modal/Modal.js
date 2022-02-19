@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 
 const Modal = props => {
-
     useEffect(() => {
         if (props.show) {
             document.querySelector('body').style.overflow = 'hidden';
