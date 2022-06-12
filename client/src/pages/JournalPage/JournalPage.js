@@ -55,6 +55,7 @@ const JournalPage = () => {
         deleteJournal(user.accessToken, currentJournal.journal_id, allJournalsRef, journals, setJournals, setShowDeleteJournal)
         setCurrentJournal(null);
     }, [user.accessToken, currentJournal, allJournalsRef, journals, setJournals, setShowDeleteJournal]);
+    
     const editJournalHandler = useCallback(selectedJournal => {
         setShowJournalForm(true);
         setIsEdit(true);

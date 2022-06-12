@@ -23,14 +23,12 @@ const JournalModal = ({ show, clickHandler, accessToken, journals, setJournals,
     });
     const [currentColor, setCurrentColor] = useState(BLUE);
     const [messageState, setMessageState] = useState({
-        message: "", showMessage: true, isError: false
+        message: "", showMessage: false, isError: false
     });
     const [isLoading, setIsLoading] = useState(false);
     const [modalTitle, setModalTitle] = useState("Create a new journal");
     
-    useEffect(() => {
-        setMessageState({ message: "", showMessage: false, isError: false });
-        
+    useEffect(() => {        
         if (show) return;
         
         setTitle("");
@@ -51,6 +49,11 @@ const JournalModal = ({ show, clickHandler, accessToken, journals, setJournals,
         setIsLoading(false);
     }, [isEdit]);
 
+    useEffect(() => {
+        console.log(messageState);
+        if (!messageState.isError) resetInputFields(setTitle, setCaption, setAudioJournal, setCurrentColor);
+    }, [messageState]);
+
     const titleHandler = e => {
         if(e.target.value.length > MAX_TITLE_LENGTH) return;
         setTitle(e.target.value);
@@ -66,8 +69,7 @@ const JournalModal = ({ show, clickHandler, accessToken, journals, setJournals,
         setIsLoading(true);
         createJournal(accessToken, e, journalData, journals, setJournals, messageState, setMessageState, 
             allJournalsRef, shouldColorFilter, filterColor, isAscending);
-        if (!messageState.isError) resetInputFields(setTitle, setCaption, setAudioJournal, setCurrentColor);
-
+        
         setIsLoading(false);
     }, [title, caption, audioJournal, journals, currentColor, messageState, allJournalsRef, shouldColorFilter, filterColor]);
     
@@ -76,12 +78,13 @@ const JournalModal = ({ show, clickHandler, accessToken, journals, setJournals,
         setIsLoading(true);
         editJournal(e, accessToken, currentJournal.journal_id, journalData, messageState, 
             setMessageState, allJournalsRef, journals, setJournals, isAscending);
-        if (!messageState.isError) resetInputFields(setTitle, setCaption, setAudioJournal, setCurrentColor);
         
         setIsLoading(false);
         setIsEdit(false);
         clickHandler();
     }, [title, caption, audioJournal, currentColor]);
+
+
 
     return(
         <>

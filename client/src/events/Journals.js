@@ -29,7 +29,6 @@ export const resetInputFields = (setTitle, setCaption, setAudioJournal, setCurre
 
 export const createJournal = async (accessToken, e, journalData, journals, setJournals, messageState, setMessageState, allJournalsRef, shouldColorFilter, filterColor, isAscending) => {
     e.preventDefault();
-    setMessageState({message: "", showMessage: false, isError: messageState.isError});
     try {
         const { data } = await axios.post("/journals/", journalData, formDataHeader(accessToken));
         const newJournal = createNewJournalEntryData(data.journal);
@@ -50,7 +49,6 @@ export const createJournal = async (accessToken, e, journalData, journals, setJo
 
 export const editJournal = async(e, accessToken, journalID, journalData, messageState, setMessageState, allJournalsRef, journals, setJournals, isAscending) => {
     e.preventDefault();
-    setMessageState({message: "", showMessage: false, isError: messageState.isError});
     try {
         const { data } = await axios.put(`/journals/${journalID}`, journalData, formDataHeader(accessToken));
         const updatedJournal = createNewJournalEntryData(data.journal);
